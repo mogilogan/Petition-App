@@ -8,8 +8,8 @@ class Connection {
       this.pool = mysql.createPool({
         connectionLimit: 100,
         host: '127.0.0.1',
-        user: 'newuser',
-        password: 'chicken$4',
+        user: 'maddy',
+        password: 'maddy@123',
         database: 'test',
         port: 3306
       })
