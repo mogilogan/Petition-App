@@ -1,5 +1,6 @@
 import React,{useState} from 'react'
 import axios from 'axios';
+import { Button, TextField } from '@mui/material';
 
 const Signup = () => {
     const [name,setName]=useState("");
@@ -30,17 +31,18 @@ const Signup = () => {
     }
 
   return (
-    <div>
+    <div  className='flex flex-col max-w-md mx-auto'>
 
-    <p>SignUp Page</p>
+    <p className='text-2xl font-sans text-teal-500'>SignUp Page</p>
 
-    <input type='text' onChange={(e)=>setName(e.target.value)} placeholder='Enter Name' /> 
-    <input type='text' onChange={(e)=>setUsername(e.target.value)} placeholder='Enter username' /> 
-    <input type='password' onChange={(e)=>setPassword(e.target.value)} placeholder='Enter password' /> 
-    <input type='number' onChange={(e)=>setPhonenumber(e.target.value)} placeholder='Enter Phone Number' /> 
-    <input type='text' onChange={(e)=>setDepartment(e.target.value)} placeholder='Enter Department' /> 
-    <input type='text' onChange={(e)=>setCategory(e.target.value)} placeholder='Enter Category' /> 
-    <button type='submit' onClick={handlelogin}>submit</button>
+    <TextField variant='outlined' type='text' onChange={(e)=>setName(e.target.value)} label='Enter Name' /> 
+    <TextField variant='outlined' type='text' onChange={(e)=>setUsername(e.target.value)} label='Enter username' /> 
+    <TextField  variant='outlined'type='password' onChange={(e)=>setPassword(e.target.value)} label='Enter password' /> 
+    <TextField  variant='outlined'type='number' onChange={(e)=>setPhonenumber(e.target.value)} label='Enter Phone Number' /> 
+    <TextField variant='outlined'type='text' onChange={(e)=>setDepartment(e.target.value)} label='Enter Department' /> 
+    <TextField variant='outlined'type='text' onChange={(e)=>setCategory(e.target.value)} label='Enter Category' /> 
+    <br/>
+    <Button type='submit' variant='contained' onClick={handlelogin}>submit</Button>
 
 
     </div>

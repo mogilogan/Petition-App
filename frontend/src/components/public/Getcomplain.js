@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import { Button, TextField, Typography } from '@mui/material';
 
 const Getcomplain = () => {
     const [id,setId]=useState();
@@ -16,26 +17,22 @@ const Getcomplain = () => {
     })
     .catch((error) => {
         setResult([])
-        console.log(error.response.data);
+        console.log(error.response);
     })
 }
   return (
     
-    <div>
-        <input type="number" placeholder='Enter Complain id' onChange={(e)=>setId(e.target.value)}/>
-        <button type='submit' onClick={fetchPetition}>Get</button>
+    <div  className='flex flex-col max-w-md mx-auto'>
+      <h1 className='text-3xl text-teal-500 py-2 ' >Check Complain Details and Status</h1>
+      <TextField type='number' id="outlined-basic" label="Enter Complain Id" variant="outlined" onChange={(e)=>setId(e.target.value)}/>
+       <br/>
+       <Button variant="contained" onClick={fetchPetition}>Get complain</Button>
 
         {Object.entries(result).map(([key,value])=>{
             return(
             <div>{key}: {value}</div>
             )
         })}
-
-
-
-
-
-
     </div>
     
   )

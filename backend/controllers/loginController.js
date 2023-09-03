@@ -27,7 +27,7 @@ const userLogin = (req, res, next) => {
           return res.status(400).json({ error: 'Invalid Password' })
         } else if (result === true) {
           const userData = { ...results[0] }
-          userData._password = 'Redacted'
+          userData._password = 'Hashed'
 
           const token = jwt.sign(
             {
@@ -38,8 +38,6 @@ const userLogin = (req, res, next) => {
           )
 
           return res.status(201).json({
-            message: 'Logged In',
-            user: userData,
             token
           })
         }
