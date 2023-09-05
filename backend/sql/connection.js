@@ -10,7 +10,7 @@ class Connection {
         host: '127.0.0.1',
         user: 'newuser',
         password: 'chicken$4',
-        database: 'test',
+        database: 'petition',
         port: 3306
       })
 

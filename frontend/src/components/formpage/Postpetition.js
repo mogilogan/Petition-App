@@ -1,5 +1,6 @@
 import React,{useState} from 'react';
 import axios from 'axios';
+import { Button, TextField } from '@mui/material';
 
 const Postpetition = () => {
 
@@ -20,14 +21,16 @@ const Postpetition = () => {
         console.log(error.response);
     })
 }
-
+const user=localStorage.getItem('profile');
   return (
-    <div>
+    <div className='flex flex-col max-w-md mx-auto'>
+      {user}
 <h1>add Complain</h1>
-<input type='text' onChange={(e)=>setTitle(e.target.value)} placeholder='Enter Title' /> 
-    <input type='text' onChange={(e)=>setCategory(e.target.value)} placeholder='Enter Category' /> 
-    <input type='text' onChange={(e)=>setDescription(e.target.value)} placeholder='Enter Description' /> 
-    <button onClick={handlePetition}>Add Complain</button>
+<TextField type='text' onChange={(e)=>setTitle(e.target.value)} label='Enter Title' /> 
+    <TextField type='text' onChange={(e)=>setCategory(e.target.value)} label='Enter Category' /> 
+    <TextField type='text' onChange={(e)=>setDescription(e.target.value)} label='Enter Description' /> 
+    <br/>
+    <Button variant='contained' onClick={handlePetition}>Add Complain</Button>
     </div>
   )
 }
