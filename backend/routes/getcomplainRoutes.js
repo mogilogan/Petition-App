@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const { getComplain } = require('../controllers/peoplecontroller')
+const { getStatus } = require('../controllers/peoplecontroller')
 
 
-router.post('/', getComplain)
+router.post('/', getStatus)
 
 module.exports = router

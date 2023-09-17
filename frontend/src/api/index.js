@@ -13,6 +13,8 @@ API.interceptors.request.use((req)=>{
 
 // login api
 export const signIn = (formData) => API.post('/login',formData);
+export const statusCheck = (petition_id) => API.post('/getpetition',petition_id);
+export const addPetition = (formData) => API.post('/petition/add',formData);
 
 
 // remaining apis:
