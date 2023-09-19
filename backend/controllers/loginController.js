@@ -20,7 +20,7 @@ const userLogin = (req, res, next) => {
           .send(`User with user_name "${user_name}" does not exist.`)
 
      
-      const hash = results[0]._password
+      const hash = results[0].password
 
       bcrypt.compare(password, hash).then((result) => {
       
@@ -28,17 +28,20 @@ const userLogin = (req, res, next) => {
           return res.status(400).json({ error: 'Invalid Password' })
         } else if (result === true) {
           const userData = { ...results[0] }
+          // delete the password
+          delete userData['password'];
 
           const token = jwt.sign(
             {
               userData
             },
             'secret',
-            { expiresIn: 60 * 10 }
+            { expiresIn: 60*60 }
           )
 
           return res.status(201).json({
-            result: token,userData
+            result: token,
+            userData
           });
         }
       })

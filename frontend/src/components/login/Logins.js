@@ -6,7 +6,6 @@ import { Button, Input, TextField, Typography } from '@mui/material';
 
 
 import { signin } from '../../actions/auth';
-import { AUTH } from '../../constants/actionTypes';
 
 const initialState = {user_name:'', password:''};
 
@@ -21,13 +20,13 @@ const Login = () => {
    const [showpassword,setShowpassword] = useState(false);
    const handleShowpassword = () => setShowpassword(!showpassword);
 
-// handle login actions::
+    // handle login actions::
     const handlelogin = (e) => {
        e.preventDefault();
        dispatch(signin(form,navigate));
     }
 
-//handle change actions:
+    //handle change actions:
     const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   return (
