@@ -2,6 +2,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Graduate&family=Rampart+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Graduate&family=Henny+Penny&family=Rampart+One&display=swap');
 
+  @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Rubik+Bubbles&display=swap');
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -41,3 +44,26 @@ input::-webkit-inner-spin-button {
   }
 
 
+.disablearrows{
+ -webkit-outer-spin-button,
+-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+
+}
+
+
+
+.formtext,select{
+  
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  
+  
+}

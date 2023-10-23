@@ -5,18 +5,20 @@ export const STATUS = 'STATUS';
 
 
 
-export const FETCHNEW = 'FETCHNEW';
-export const FETCHDEPT = 'FETCHDEPT';
-export const FETCHSUBDEPT = 'FETCHSUBDEPT';
-export const FETCHCIRINS = 'FETCHCIRINS';
-export const FETCHSHO = 'FETCHSHO';
+export const FETCHALL = 'FETCHALL';
+export const CLEAR= 'CLEAR';
+
+
+export const COUNT  = 'COUNT';
+
 
 export const ASSIGNSSP = 'ASSIGNSSP';
-export const ASSGINSP  = 'ASSGINSP';
+export const ASSIGNSP  = 'ASSGINSP';
 export const ASSGINCIRINS = 'ASSGINCIRINS';
 
 
-
+export const END_LOADING = 'END_LOADING';
+export const START_LOADING = 'START_LOADING';
 
 export const AUTH = 'AUTH';
 export const LOGOUT  = 'LOGOUT';

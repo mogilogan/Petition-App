@@ -14,6 +14,7 @@ module.exports = {
         'rampart-one': ['Rampart One', 'sans-serif'],
         'graduate': ['Graduate'],
         'henny': ['Henny Penny', 'cursive'],
+        'libre':['Libre','Baskerville']
       },
       boxShadow:  {
         'light-neumorphism-2xl': '-12px -12px 24px rgba(255, 255, 255, 1), 12px 12px 24px rgba(206, 212, 219, 1)',

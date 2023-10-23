@@ -3,35 +3,48 @@ import { Link,useNavigate,useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import decode from 'jwt-decode';
 
+
 import * as actionType from '../../constants/actionTypes';
 
+import {AiOutlineHome, AiFillFileAdd } from 'react-icons/ai'
+import {HiOutlineDocumentDuplicate} from  'react-icons/hi'
+import {BsFillCaretDownSquareFill} from 'react-icons/bs'
+import {BiLogIn,BiLogOut} from 'react-icons/bi'
+import emblem from "../../assests/emblem.png";
 
 const Navbar = () => {
-      // user State declaration:
+
+
+  const [toggle, setToggle] = useState(false);
+
+  // toggle nav for mob view
+    const showNav = () => {
+    setToggle(!toggle);
+    };
+
+  // user State declaration:
     const [user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 
-      // location tracker and setter(route)
+  // location tracker and setter(route)
     const dispatch = useDispatch();
     let location = useLocation();
     const navigate  = useNavigate();
   
-         // logout function
+  // logout function
     const logout = ()  => {
-
-      navigate('/login',{replace:true});
         dispatch({ type: actionType.LOGOUT });
         setUser(null);
-
-        
     };
-
 
 // use effect to constantly monitor the token and call logout function if expired.
       useEffect(() => {
         const token = user?.result;
         if (token) {
           const decodedToken = decode(token);
-          if (decodedToken.exp * 1000 < new Date().getTime()) logout();
+                 if (decodedToken.exp * 1000 < new Date().getTime()) {
+                  logout();
+                  navigate("/");
+                 }
         }
         setUser(JSON.parse(localStorage.getItem('profile')));
       }, [location]);
@@ -39,37 +52,81 @@ const Navbar = () => {
 
       
   return (
-    <header className=" shadow-gray-400 text-gray-600 body-font">
-    <div className="container mx-auto flex flex-wrap p-5 flex-col items-center md:flex-row">
-      <a className="flex title-font md:mr-0 mr-2 font-medium items-center text-gray-900 mb-4 md:mb-0">
-        {/* <Link href='/'><img className="cursor-pointer" width={40} height={40} src="/images/logo.png" /></Link> */}
+        <div>
 
-        {/* message based on user login */}
-        {user!=null && <span className=" ml-auto text-xl">Welcome: {user.userData.rank}</span> }
-        {user===null && <span className=" ml-auto text-xl">Login to continue</span> }
-      </a>
+              <header className=" shadow-gray-400 md:block hidden bg-[#090a21] m-0 p-0 w-[25%] fixed h-[100%] overflow-auto text-gray-600 ">
+              <div className="container mx-auto  p-5  items-center ">
+
+                  <p className="flex title-font md:mr-0 mr-2 font-medium items-center text-white ">
+                  <Link to="/"><img className="cursor-pointer" width={100} height={200} src={emblem} /></Link>
+              {/* message based on user login */}
+                  {user!=null && <span className=" mx-auto text-xl">Welcome: {user.userData.user_name}</span> }
+                  {user===null && <span className=" mx-auto text-xl">Login to continue</span> }
+                  </p>
+
+      
+                  <div className='pt-5 pb-3'>
+                     <hr className='text-gray-500 '/>
+                  </div>
+
+                  <nav className=" text-left  grid grid-flow-row gap-5 w-[100%]  ">
+     
+                     <Link to='/' > <button className=" w-[100%] flex flex-row  hover:bg-[#694d27]  py-2 hover:rounded-lg text-white  text-2xl gap-6"><AiOutlineHome size={30} />Home</button></Link>
+                     {user != null && (<><Link to='/add'><button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg py-2   hover:bg-[#694d27]  text-2xl  text-white "><AiFillFileAdd size={30}/>Add Petition</button></Link>
+                     <Link to='/petitions'><button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] py-2  text-white  text-2xl  "><HiOutlineDocumentDuplicate size={30} /> Petitions</button></Link></>)}
+                  </nav>
+
+                  <div className='pb-3 pt-5'>
+                  <hr className='text-gray-500 '/>
+                  </div>
+
+              {/* Login / Logut button */}
+                  <div className='py-5'>
+                     {user?.result ? (
+                          <Link to="/" >
+                          <button onClick={logout} className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] py-2  text-white  text-2xl  "><BiLogOut size={30} style={{color:'white'}}/> Logout</button>
+                          </Link>
+                      ):(
+                          <Link to="/login">
+                          <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] py-2  text-white  text-2xl "><BiLogIn size={30} style={{color:'white'}}/>Login</button>
+                          </Link>
+                      )}
+                  </div>
+ 
+              </div>
+              </header>
 
 
-      <nav className="md:ml-auto ml-3  md:mr-auto flex flex-wrap items-center text-base justify-center">
-        <Link to='/'><a className="hover:shadow-md hover:shadow-pink-300 cursor-pointer mr-5 hover:border-2  hover:md:shadow-xl md:shadow-gray-500 hover:border-pink-500 rounded-lg py-1 px-2 hover:text-gray-900">Home</a></Link>
-        {user != null && (<Link to='/add'><a className="hover:shadow-md hover:shadow-pink-300 cursor-pointer mr-5 hover:border-2 hover:md:shadow-xl shadow-gray-500 hover:border-pink-500 rounded-lg py-1 px-2 hover:text-gray-900">Add Petition</a></Link>)}
-        <Link to='/petitions'><a className="hover:shadow-md hover:shadow-pink-300 cursor-pointer mr-5 hover:border-2 hover:md:shadow-xl shadow-gray-500 hover:border-pink-500 rounded-lg py-1 px-2 hover:text-gray-900">Petitions</a></Link>
-      </nav>
+{/* Mobile Navigateion */}
+              <div className='md:hidden block relative '>
+                  <nav className="fixed top-0 w-[100%] bg-[#0d193a] items-center flex p-4">
+                      <div className="flex justify-between items-center w-full flex-wrap md:flex-nowrap">
+                         <h1 className="text-xl text-white font-bold cursor-pointer"><Link to="/"><img className="cursor-pointer" width={40}  src={emblem} /></Link></h1>
+                         <button className="flex justify-end md:hidden ring-1 ring-black rounded" onClick={showNav}>
+                         <BsFillCaretDownSquareFill  size={32} style={{color:'white'}}/>
+                         </button>
+                         <ul onClick={showNav} className={`${toggle ? " flex" : " hidden"} flex-col   w-full first:mt-2  `}>
+       
+                           <li className="border-t font-medium w-full  p-2.5 mt-3 md:border-none md:p-0 md:mt-0 md:w-auto"><Link to='/' > <button className=" w-[100%] flex flex-row  hover:bg-[#694d27]  py-2 hover:rounded-lg text-white  text-2xl gap-6"><AiOutlineHome size={30} />Home</button></Link> </li>
+                           {user != null && (<>
+                           <li className="border-t font-medium w-full  p-2.5 mt-3 md:border-none md:p-0 md:mt-0 md:w-auto"><Link to='/add'><button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg py-2   hover:bg-[#694d27]  text-2xl  text-white "><AiFillFileAdd size={30}/>Add Petition</button></Link> </li>
+                           <li className="border-t font-medium w-full  p-2.5 mt-3 md:border-none md:p-0 md:mt-0 md:w-auto"> <Link to='/petitions'><button className=" w-[100%] flex flex-row gap-6 hover:rounded-lg hover:bg-[#694d27] py-2 text-white text-2xl"><HiOutlineDocumentDuplicate size={30} /> Petitions</button></Link> </li>
+                           </>)}
 
 
- {/* Login / Logut button */}
+                 {/* Login Logut diplay */}
+                           {user?.result ? (
+                           <li className="border-t font-medium w-full  p-2.5 mt-3 md:border-none md:p-0 md:mt-0 md:w-auto">  <Link to="/" ><button onClick={logout} className=" w-[100%] flex flex-row gap-6 hover:rounded-lg hover:bg-[#694d27] py-2 text-white text-2xl"><BiLogOut size={30} style={{color:'white',fill:'white'}}/> Logout</button> </Link> </li>
+                           ):(
+                           <li className="border-t font-medium w-full  p-2.5 mt-3 md:border-none md:p-0 md:mt-0 md:w-auto">  <Link to="/login"><button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] py-2  text-white  text-2xl "><BiLogIn size={30} style={{color:'white',fill:'white'}} />Login</button></Link> </li>
+                           )}
+             
+                         </ul>
+                      </div>
+                  </nav>
+              </div>
 
-    {user?.result ? (
-      <Link >
-       <button onClick={logout} className="md:mt-0 mt-2 md:mr-0 mr-2 bg-pink-500 px-8 py-3 rounded-full text-sm text-white hover:text-gray-200  shadow-xl hover:shadow-2xl hover:shadow-pink-500/80 shadow-pink-400/40 hover:bg-pink-500">LOGOUT</button> 
-      </Link>
-    ):(
-      <Link to="/login">
-       <button className="md:mt-0 mt-2 md:mr-0 mr-2 bg-pink-500 px-8 py-3 rounded-full text-sm text-white hover:text-gray-200  shadow-xl hover:shadow-2xl hover:shadow-pink-500/80 shadow-pink-400/40 hover:bg-pink-500">Login</button> 
-      </Link>
-    )}
-    </div>
-  </header>
+        </div>
 );
 }
 

@@ -6,11 +6,15 @@ import './App.css';
 // components
 import Login from './components/login/Logins'
 
-import Getcomplain from './components/Status/Getcomplain';
+
 import Postpetition from './components/formpage/Postpetition';
 import Home from './components/Home';
 import Navbar from './components/Navbar/Navbar';
 import Petitions from './components/petitions/petitions';
+import Petition from './components/petitions/petition/petition';
+import Footer from './components/footer/Footer';
+
+
 
 
 function App() {
@@ -19,17 +23,24 @@ function App() {
   return (
    <>
       {/* //static for all pages */}
-      <Navbar/>
-      <Home/>
+<div className='md:flex md:flex-row'>
 
+      <Navbar/>
+    
+     
       {/* //route through */}
        <Routes>
-        <Route path='/' Component={Getcomplain}/>
+        <Route path='/' Component={Home}/>
+        <Route path="/login" Component={Login}/>
         <Route path='/add' Component={Postpetition}/>
         <Route path='/petitions' Component={Petitions}/>
-        <Route path="/login" Component={Login}/>
+        <Route path='/petition/:currentId' exact={true} Component={Petition}/>
+       
     
        </Routes>
+       
+       </div>
+       <Footer />
        </>
   );
 }
