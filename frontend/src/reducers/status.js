@@ -3,7 +3,7 @@ import * as actionType from '../constants/actionTypes';
 
 
 
-const statusReducer = (state = { petitions: [] }, action) => {
+const statusReducer = (state = { petition: [] }, action) => {
     switch (action.type) {
       case actionType.STATUS:
         return { ...state, petition: action.payload.petitions.petition };

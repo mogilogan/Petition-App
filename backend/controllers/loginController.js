@@ -25,7 +25,7 @@ const userLogin = (req, res, next) => {
       bcrypt.compare(password, hash).then((result) => {
       
         if (result === false) {
-          return res.status(400).json({ error: 'Invalid Password' })
+          return res.status(400).send( 'Invalid Password' )
         } else if (result === true) {
           const userData = { ...results[0] }
           // delete the password
@@ -36,7 +36,7 @@ const userLogin = (req, res, next) => {
               userData
             },
             'secret',
-            { expiresIn: 60*60 }
+            { expiresIn: 5 * 60 * 60}
           )
 
           return res.status(201).json({

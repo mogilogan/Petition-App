@@ -7,6 +7,7 @@ const dotenv = require('dotenv')
 const loginRouter = require("./routes/loginRouter.js");
 const petitionRouter = require("./routes/petitionRouter.js");
 const getPetition  = require("./routes/getcomplainRoutes.js")
+const countRouter  = require("./routes/countRouter.js")
 
 //config dotenv
 dotenv.config({ path: './config/config.env' })
@@ -34,7 +35,8 @@ app.use((req, res, next) => {
 })
 
 //use routes
-app.use("/", loginRouter);
+app.use("/", countRouter);
+app.use("/login", loginRouter);
 app.use("/petition", petitionRouter);
 app.use("/getpetition", getPetition);
 
