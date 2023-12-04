@@ -10,7 +10,7 @@ export const ongoingcount = (formData) => async (dispatch) => {
     try {
       // returns all count for present user
       const { data } = await api.countoPetition(formData);
-     
+     console.log(data);
       dispatch({ type: COUNT,payload:data});
 
     } catch (error) {
