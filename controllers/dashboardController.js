@@ -6,25 +6,25 @@ const { handleSQLError } = require('../sql/error')
 
 const countongoing = (req, res) => {
 
-    console.log("ok");
-    const {dept_name,sub_dept,rank,cir_inspec,username } = req.body
+    console.log(req.body);
+    const {dept_name,sub_dept,rank,type,username } = req.body
   
-    switch (rank) {
+    switch (type) {
   
       // DGP fetch all
-      case "1":
+      case "all":
         pool.query(
-          "SELECT COUNT(*) as total_rows, SUM(CASE WHEN petition_info.closed = '1' THEN 1 ELSE 0 END) as closed, SUM(CASE WHEN petition_info.closed = '0' AND petition_id IN (SELECT petition_id FROM petition_dept) THEN 1 ELSE 0 END) as ongoing, COUNT(CASE WHEN petition_info.closed = '0'AND petition_id NOT IN (SELECT petition_id FROM petition_dept) THEN 1 ELSE NULL END) as new FROM petition_info ",
+          "SELECT * FROM petition_info",
           (err, results) => {
             if (err) return handleSQLError(res, err)
             if (!results.length)
               return res
                 .status(404)
                 .send(`No Petitions exists for your DGP's petitions`)
-            console.log(results);
+           
             return res.status(201).json(
                 
-               results[0],
+               results,
             )
           }
         )
@@ -32,10 +32,10 @@ const countongoing = (req, res) => {
         break;
   
       // SSP fetch all
-      case "2":
+      case "ongoing":
         
           pool.query(
-            "SELECT COUNT(*) as total_rows, SUM(CASE WHEN closed = '1' THEN 1 ELSE 0 END) as closed, SUM(CASE WHEN closed = '0' AND petition_id IN (SELECT petition_id FROM petition_subdept) THEN 1 ELSE 0 END) as ongoing, COUNT(CASE WHEN closed = '0' AND petition_id NOT IN (SELECT petition_id FROM petition_subdept) THEN 1 ELSE NULL END) as new FROM ( SELECT petition_id, closed FROM petition_info WHERE petition_id IN (SELECT petition_id FROM petition_dept WHERE petition_dept.dept = '" + dept_name + "')) AS filtered_petitions ;",
+            "SELECT petition_info.*,petition_dept.dept FROM petition_info LEFT JOIN petition_dept ON petition_info.petition_id = petition_dept.petition_id WHERE closed= 0",
   
             (err, results) => {
               if (err) return handleSQLError(res, err)
@@ -54,9 +54,9 @@ const countongoing = (req, res) => {
         break;
   
        //SP fetch all
-        case "3":
+        case "closed":
           pool.query(
-            "SELECT COUNT(*) as total_rows, SUM(CASE WHEN closed = '1' THEN 1 ELSE 0 END) as closed, SUM(CASE WHEN closed = '0' AND petition_id IN (SELECT petition_id FROM petition_circle) THEN 1 ELSE 0 END) as ongoing, COUNT(CASE WHEN closed = '0' AND petition_id NOT IN (SELECT petition_id FROM petition_circle) THEN 1 ELSE NULL END) as new FROM (SELECT petition_id, closed FROM petition_info WHERE petition_id IN (SELECT petition_id FROM petition_subdept WHERE petition_subdept.sub_dept = '"+sub_dept+"')) AS filtered_petitions ; ",
+            "SELECT * FROM petition_info WHERE closed=1",
   
             (err, results) => {
   
@@ -77,7 +77,7 @@ const countongoing = (req, res) => {
   
   
         //Cir Inspec fetch all
-        case "4":
+        case "closed":
   
         pool.query(
           "SELECT SUM(CASE WHEN petition_info.closed = '0' THEN 1 ELSE 0 END) as ongoing, SUM(CASE WHEN petition_info.closed = '1' THEN 1 ELSE 0 END) as closed FROM petition_info WHERE petition_id IN (SELECT petition_id FROM petition_username) AND  petition_id IN (SELECT petition_id FROM petition_circle WHERE petition_circle.circle_insp = '" + username + "') AND petition_info.closed = '0' ",
