@@ -67,3 +67,17 @@ input::-webkit-inner-spin-button {
   
   
 }
+
+.requireds::after{
+  content:" *";
+  color: red;
+}
+
+
+.dropdown-content {
+  display: none;
+}
+
+.dropdownnav:hover .dropdown-content {
+  display: block;
+}

@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { Button } from "@mui/material";
-import { closereport, getreport } from "../../actions/report";
+import {
+  acceptreport,
+  closereport,
+  getreport,
+  returnreport,
+} from "../../actions/report";
 import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 
 const initialState = {
   petition_id: "",
   close_report: "",
+  rank: "",
+  active_place: "",
 };
 const Report = () => {
   const dispatch = useDispatch();
@@ -20,9 +27,9 @@ const Report = () => {
   const { currentId } = useParams();
 
   const { petition } = useSelector((state) => state.status);
-  //   const docs = [
-  //     { uri: petition.evidence }, // Local File
-  //   ];
+
+  const docs = [{ uri: petition.evidence }];
+
   const created = new Date(petition.time_stamp);
   const depttime = new Date(petition.dept_time);
   const subtime = new Date(petition.sub_time);
@@ -37,19 +44,51 @@ const Report = () => {
 
   const fetch = async () => {
     dispatch(getreport({ petition_id: currentIds }));
-    setForm({ ...form, petition_id: currentIds });
+    setForm({
+      ...form,
+      petition_id: currentIds,
+      rank: user?.userData?.rank,
+      active_place: petition.active_place,
+    });
   };
 
-  const handleSubmit = async () => {
-    console.log("inside submit");
-    setForm({ ...form, petition_id: currentIds });
+  const handleAccept = async () => {
+    setForm({
+      ...form,
+      petition_id: currentIds,
+      rank: user?.userData?.rank,
+      active_place: petition.active_place,
+    });
+    let message = dispatch(acceptreport(form, navigate));
+    window.alert(message);
+    navigate("/pending", { replace: true });
+  };
+
+  const handleReturn = async () => {
+    setForm({
+      ...form,
+      petition_id: currentIds,
+      rank: user?.userData?.rank,
+      active_place: petition.active_place,
+    });
+    dispatch(returnreport(form, navigate));
+    navigate("/pending", { replace: true });
+  };
+
+  const handleClose = async () => {
+    setForm({
+      ...form,
+      petition_id: currentIds,
+      rank: user?.userData?.rank,
+      active_place: petition.active_place,
+      user_name: user?.userData?.user_name,
+    });
     dispatch(closereport(form, navigate));
-    navigate("/", { replace: true });
+    navigate("/pending", { replace: true });
   };
 
   const handleChange = (e) => {
     setForm({ ...form, close_report: e.target.value });
-    console.log(form);
   };
 
   useEffect(() => {
@@ -132,7 +171,7 @@ const Report = () => {
                 class="block text-black text-sm font-bold mb-2"
                 for="username"
               >
-                Title:
+                Type:
               </label>
               <p
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
@@ -140,7 +179,7 @@ const Report = () => {
                 label="Title"
                 type="text"
               >
-                {petition.title}
+                {petition.type}
               </p>
               <label
                 class="block text-black text-sm font-bold mb-2 pt-4"
@@ -148,14 +187,13 @@ const Report = () => {
               >
                 Description:
               </label>
-              <p
-                className="shadow h-[400px]  appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
+              <div
+                className="shadow h-[400px]   border rounded min-w-[200px] py-2 px-3 text-black  "
                 name="description"
                 label="Description"
                 type="text"
-              >
-                {petition.description}
-              </p>
+                dangerouslySetInnerHTML={{ __html: petition.description }}
+              />
               <label
                 class="block text-black text-sm font-bold mb-2"
                 for="username"
@@ -247,44 +285,66 @@ const Report = () => {
               <br />
             </div>
             <div className="py-4">
-              <p className="text-2xl text-center font-bold  bg-white rounded-2xl w-[150px] mx-auto py-1">
-                Preview
-              </p>
+              <DocViewer
+                pluginRenderers={DocViewerRenderers}
+                documents={docs}
+                config={{
+                  header: {
+                    disableHeader: true,
+                    disableFileName: false,
+                    retainURLParams: false,
+                  },
+                }}
+                style={{ height: 600 }}
+              />
             </div>
 
-            {/* <DocViewer
-              pluginRenderers={DocViewerRenderers}
-              documents={docs}
-              config={{
-                header: {
-                  disableHeader: true,
-                  disableFileName: false,
-                  retainURLParams: false,
-                },
-              }}
-              style={{ height: 400 }}
-            /> */}
-            <form
-              class="bg-white max-w-lg mx-auto shadow rounded px-16 pt-6 pb-8 mb-4"
-              onSubmit={handleSubmit}
+            {/* <a
+              href={petition.evidence}
+              target="_blank"
+              rel="noopener noreferrer"
             >
+              Open First PDF
+            </a> */}
+
+            <form class=" max-w-lg mx-auto  rounded px-16 pt-6 pb-8 mb-4">
               <textarea
-                className="shadow h-[400px]  appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow h-[200px]  appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="description"
                 label="Description"
                 value={form.description}
                 type="text"
                 onChange={(e) => handleChange(e)}
               />
-              <div class="flex items-center justify-between">
+              <div class="flex items-center justify-between mx-auto">
                 <Button
                   class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                   variant="contained"
-                  type="submit"
                   color="primary"
+                  onClick={handleAccept}
                 >
-                  submit
+                  Accept and Forward
                 </Button>
+                <Button
+                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleReturn}
+                >
+                  return
+                </Button>
+                {(user?.userData?.rank === "3" ||
+                  user?.userData?.rank === "2" ||
+                  user?.userData?.rank === "1") && (
+                  <Button
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    variant="contained"
+                    color="primary"
+                    onClick={handleClose}
+                  >
+                    close
+                  </Button>
+                )}
               </div>
             </form>
           </div>

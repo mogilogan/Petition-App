@@ -12,20 +12,21 @@ import {
 import * as api from "../api/index";
 
 export const addpetition = (formData) => async (dispatch) => {
+  console.log(formData);
   try {
-    console.log(formData.fileData);
     const { data } = await api.addPetition(formData);
 
     dispatch({ type: ADD, payload: data });
 
     return data.message;
   } catch (error) {
-    console.log(error);
-    return error.response.data;
+    return error?.response?.data
+      ? error.response.data
+      : error.message + "petition is not added";
   }
 };
 
-export const fetchall = (formData, type) => async (dispatch) => {
+export const fetchall = (formData, type, setError) => async (dispatch) => {
   var data;
 
   try {
@@ -40,9 +41,8 @@ export const fetchall = (formData, type) => async (dispatch) => {
       case "closed":
         ({ data } = await api.fetchClosed(formData));
         // case "forwarded":
-        //   console.log(formData);
+
         // ({ data } = await api.fetchForwarded(formData));
-        // console.log(data);
 
         break;
 
@@ -54,8 +54,11 @@ export const fetchall = (formData, type) => async (dispatch) => {
   } catch (error) {
     // clear state if requested data is not fetched
     dispatch({ type: CLEAR });
-    console.log(error);
-    return error.message;
+    if (error?.response?.data) {
+      setError(error.response.data);
+    } else {
+      setError(error.message);
+    }
   }
 };
 

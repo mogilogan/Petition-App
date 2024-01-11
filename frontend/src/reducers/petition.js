@@ -65,7 +65,7 @@ export default (
       };
 
     case CLEAR:
-      return { ...state, petitions: [] };
+      return { ...state, petitions: [], petition: [] };
 
     default:
       return state;

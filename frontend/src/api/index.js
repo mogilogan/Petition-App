@@ -1,6 +1,10 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:5000" });
+//re routed APi Gateway end point for aws : https://wh4wikk843.execute-api.ap-south-1.amazonaws.com/
+
+const API = axios.create({
+  baseURL: "http://localhost:5000",
+});
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("profile")) {
@@ -18,7 +22,7 @@ export const statusCheck = (petition_id) =>
   API.post("/getpetition", petition_id);
 
 //count
-export const countoPetition = (formData) => API.post("/count", formData);
+export const Dashboard = (formData) => API.post("/count", formData);
 
 // add petiton api
 export const addPetition = (formData) => API.post("/petition/add", formData);
@@ -46,3 +50,10 @@ export const addReport = (formData) => API.post("/report/add", formData);
 export const fetchReport = (formData) => API.post("/report/fetch", formData);
 export const getReport = (formData) => API.post("/report/get", formData);
 export const closeReport = (formData) => API.post("/report/close", formData);
+export const acceptReport = (formData) => API.post("/report/accept", formData);
+export const returnReport = (formData) => API.post("/report/return", formData);
+
+//duplciate
+
+export const duplicateCheck = (formData) =>
+  API.post("/report/duplicate", formData);

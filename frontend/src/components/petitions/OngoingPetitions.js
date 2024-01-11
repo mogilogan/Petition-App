@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { circle } from "../../assests/circle";
+import { fetchall } from "../../actions/petition";
 import { useNavigate } from "react-router-dom";
-import { fetchreport } from "../../actions/report";
-import { CLEAR } from "../../constants/actionTypes";
 
-const Pending = () => {
-  // plugins declarations
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
+const OngoingPetitions = () => {
   //fetched user
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+  const [data, setData] = useState(user?.userData);
 
   // fetch petitons from redux state
   const { petitions, isLoading } = useSelector((state) => state.petition);
@@ -20,24 +15,27 @@ const Pending = () => {
   // error display
   const [error, setError] = useState("");
 
-  const handlefetch = async () => {
-    const form = {
-      user_name: user.userData.user_name,
-      rank: user.userData.rank,
-    };
-    dispatch({ type: CLEAR });
-    const message = await dispatch(fetchreport(form));
-    window.alert(message);
-  };
-
   //usereffect to make default select values
   useEffect(() => {
-    handlefetch();
+    data.whatsongoing = "active";
+    console.log(data);
+    dispatch(fetchall(user.userData, "ongoing", setError));
   }, []);
+  // plugins declarations
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // handle Filter change
+  const handleChange = async (e) => {
+    data.whatsongoing = e.target.value;
+    setError("");
+    console.log(data);
+    dispatch(fetchall(data, "ongoing", setError));
+  };
 
   // handle full page view
   const handleview = (petition_id) => {
-    navigate(`/report/:${petition_id}`);
+    navigate(`/petition/:${petition_id}`);
   };
 
   const createBlobFromContent = (content) => {
@@ -46,6 +44,23 @@ const Pending = () => {
 
   return (
     <div className=" w-[100%] pt-16 flex flex-col min-h-[100vh]  md:ml-[25%]   bg-[#b6a072] ">
+      <div className="flex flex-row justify-center">
+        {(user?.userData?.rank === "2" ||
+          user?.userData?.rank === "3" ||
+          user?.userData?.rank === "4" ||
+          user?.userData?.rank === "5") && (
+          <div class=" px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
+            <p className="flex-none text-lg">Filter By:</p>
+            <select
+              onChange={(e) => handleChange(e)}
+              class=" focus:text-indigo-600 focus:outline-none bg-transparent ml-1"
+            >
+              <option value="active">Active</option>
+              <option value="newremarks">New Remarks</option>
+            </select>
+          </div>
+        )}
+      </div>
       <section class="container mx-auto p-6 font-mono">
         <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
           <div class="w-full overflow-x-auto">
@@ -69,11 +84,12 @@ const Pending = () => {
                       {petition.petition_id}
                     </td>
                     <td class="px-4 py-3 border" align="right">
-                      {petition.title}
+                      {petition.type}
                     </td>
                     <td class="px-4 py-3 border" align="right">
-                      {petition?.time_stamp?.slice(0, 10)}
+                      {petition.time_stamp.slice(0, 10)}
                     </td>
+
                     <td align="right" class="px-4 py-3 border">
                       <button
                         onClick={() => handleview(petition.petition_id)}
@@ -99,4 +115,4 @@ const Pending = () => {
   );
 };
 
-export default Pending;
+export default OngoingPetitions;

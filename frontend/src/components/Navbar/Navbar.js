@@ -5,7 +5,12 @@ import decode from "jwt-decode";
 
 import * as actionType from "../../constants/actionTypes";
 
-import { AiOutlineHome, AiFillFileAdd, AiFillDashboard } from "react-icons/ai";
+import {
+  AiOutlineHome,
+  AiFillFileAdd,
+  AiFillDashboard,
+  AiOutlineSearch,
+} from "react-icons/ai";
 import { HiOutlineDocumentDuplicate } from "react-icons/hi";
 import { BsFillCaretDownSquareFill } from "react-icons/bs";
 import { BiLogIn, BiLogOut } from "react-icons/bi";
@@ -35,6 +40,7 @@ const Navbar = () => {
 
   // use effect to constantly monitor the token and call logout function if expired.
   useEffect(() => {
+    dispatch({ type: actionType.CLEAR });
     const token = user?.result;
     if (token) {
       const decodedToken = decode(token);
@@ -61,12 +67,14 @@ const Navbar = () => {
             </Link>
             {/* message based on user login */}
             {user != null && (
-              <span className=" mx-auto text-xl">
+              <span className=" mx-auto sm:text-md xl:text-xl">
                 Welcome: {user?.userData?.user_name}
               </span>
             )}
             {user === null && (
-              <span className=" mx-auto text-xl">Login to continue</span>
+              <span className=" mx-auto sm:text-md xl:text-xl">
+                Login to continue
+              </span>
             )}
           </p>
 
@@ -74,41 +82,68 @@ const Navbar = () => {
             <hr className="text-gray-500 " />
           </div>
 
-          <nav className=" text-left  grid grid-flow-row gap-5 w-[100%]  ">
+          <nav className=" text-left sm:text-md xl:text-xl  grid grid-flow-row gap-5 w-[100%]  ">
             <Link to="/">
               {" "}
-              <button className=" w-[100%] flex flex-row  hover:bg-[#694d27]  py-2 hover:rounded-lg text-white  text-2xl gap-6">
+              <button className=" w-[100%] flex flex-row  hover:bg-[#694d27]  py-2 hover:rounded-lg text-white   gap-6">
                 <AiOutlineHome size={30} />
                 Home
               </button>
             </Link>
+
             {user != null && (
               <>
+                <Link to="/search">
+                  {" "}
+                  <button className=" w-[100%] flex flex-row  hover:bg-[#694d27]  py-2 hover:rounded-lg text-white   gap-6">
+                    <AiOutlineSearch size={30} />
+                    Search
+                  </button>
+                </Link>
                 <Link to="/add">
-                  <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg py-2   hover:bg-[#694d27]  text-2xl  text-white ">
+                  <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg py-2   hover:bg-[#694d27]    text-white ">
                     <AiFillFileAdd size={30} />
                     Add Petition
                   </button>
                 </Link>
                 <Link to="/dashboard">
-                  <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg py-2   hover:bg-[#694d27]  text-2xl  text-white ">
+                  <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg py-2   hover:bg-[#694d27]    text-white ">
                     <AiFillDashboard size={30} />
                     Dashboard
                   </button>
                 </Link>
-                <Link to="/petitions">
-                  <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] py-2  text-white  text-2xl  ">
+                <div className="dropdownnav">
+                  <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] py-2  text-white    ">
                     <HiOutlineDocumentDuplicate size={30} /> Petitions
                   </button>
+
+                  <div className="dropdown-content">
+                    <Link to="/newpetitions">
+                      <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] py-2  text-white    ">
+                        <HiOutlineDocumentDuplicate size={30} />
+                        New Petitions
+                      </button>
+                    </Link>
+                    <Link to="/ongoingpetitions">
+                      <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] py-2  text-white    ">
+                        <HiOutlineDocumentDuplicate size={30} />
+                        Ongoing Petitions
+                      </button>
+                    </Link>
+                    <Link to="/closedpetitions">
+                      <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] py-2  text-white    ">
+                        <HiOutlineDocumentDuplicate size={30} />
+                        Closed Petitions
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+
+                <Link to="/pending">
+                  <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] py-2  text-white    ">
+                    <HiOutlineDocumentDuplicate size={30} /> Reports
+                  </button>
                 </Link>
-                {(user?.userData?.rank === "1" ||
-                  user?.userData?.rank === "2") && (
-                  <Link to="/pending">
-                    <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] py-2  text-white  text-2xl  ">
-                      <HiOutlineDocumentDuplicate size={30} /> Pending Petitions
-                    </button>
-                  </Link>
-                )}
               </>
             )}
           </nav>
@@ -123,14 +158,14 @@ const Navbar = () => {
               <Link to="/">
                 <button
                   onClick={logout}
-                  className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] py-2  text-white  text-2xl  "
+                  className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] py-2  text-white    "
                 >
                   <BiLogOut size={30} style={{ color: "white" }} /> Logout
                 </button>
               </Link>
             ) : (
               <Link to="/login">
-                <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] py-2  text-white  text-2xl ">
+                <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] py-2  text-white   ">
                   <BiLogIn size={30} style={{ color: "white" }} />
                   Login
                 </button>
@@ -140,8 +175,8 @@ const Navbar = () => {
         </div>
       </header>
 
-      {/* Mobile Navigateion */}
-      <div className="md:hidden block relative ">
+      {/* Mobile Navigation */}
+      <div className="md:hidden block relative z-[50]">
         <nav className="fixed top-0 w-[100%] bg-[#0d193a] items-center flex p-4">
           <div className="flex justify-between items-center w-full flex-wrap md:flex-nowrap">
             <h1 className="text-xl text-white font-bold cursor-pointer">
@@ -149,6 +184,12 @@ const Navbar = () => {
                 <img className="cursor-pointer" width={40} src={emblem} />
               </Link>
             </h1>
+            {/* message based on user login */}
+
+            <span className=" text-xl sm:text-3xl text-white">
+              Puducherry E-Petition
+            </span>
+
             <button
               className="flex justify-end md:hidden ring-1 ring-black rounded"
               onClick={showNav}
@@ -157,24 +198,34 @@ const Navbar = () => {
             </button>
             <ul
               onClick={showNav}
-              className={`${
+              className={`sm:text-md xl:text-xl ${
                 toggle ? " flex" : " hidden"
               } flex-col   w-full first:mt-2  `}
             >
               <li className="border-t font-medium w-full  p-2.5 mt-3 md:border-none md:p-0 md:mt-0 md:w-auto">
                 <Link to="/">
                   {" "}
-                  <button className=" w-[100%] flex flex-row  hover:bg-[#694d27]  py-2 hover:rounded-lg text-white  text-2xl gap-6">
+                  <button className=" w-[100%] flex flex-row  hover:bg-[#694d27]  pt-2 hover:rounded-lg text-white   gap-6">
                     <AiOutlineHome size={30} />
                     Home
                   </button>
                 </Link>{" "}
               </li>
+
               {user != null && (
                 <>
                   <li className="border-t font-medium w-full  p-2.5 mt-3 md:border-none md:p-0 md:mt-0 md:w-auto">
+                    <Link to="/search">
+                      {" "}
+                      <button className=" w-[100%] flex flex-row  hover:bg-[#694d27]  pt-2 hover:rounded-lg text-white   gap-6">
+                        <AiOutlineSearch size={30} />
+                        Search
+                      </button>
+                    </Link>{" "}
+                  </li>
+                  <li className="border-t font-medium w-full  p-2.5 mt-3 md:border-none md:p-0 md:mt-0 md:w-auto">
                     <Link to="/dashboard">
-                      <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg py-2   hover:bg-[#694d27]  text-2xl  text-white ">
+                      <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg pt-2   hover:bg-[#694d27]    text-white ">
                         <AiFillDashboard size={30} />
                         Dashboard
                       </button>
@@ -182,19 +233,53 @@ const Navbar = () => {
                   </li>
                   <li className="border-t font-medium w-full  p-2.5 mt-3 md:border-none md:p-0 md:mt-0 md:w-auto">
                     <Link to="/add">
-                      <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg py-2   hover:bg-[#694d27]  text-2xl  text-white ">
+                      <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg pt-2   hover:bg-[#694d27]    text-white ">
                         <AiFillFileAdd size={30} />
                         Add Petition
                       </button>
                     </Link>{" "}
                   </li>
-                  <li className="border-t font-medium w-full  p-2.5 mt-3 md:border-none md:p-0 md:mt-0 md:w-auto">
-                    {" "}
-                    <Link to="/petitions">
-                      <button className=" w-[100%] flex flex-row gap-6 hover:rounded-lg hover:bg-[#694d27] py-2 text-white text-2xl">
+
+                  <div className="dropdownnav">
+                    <li className="border-t font-medium w-full  p-2.5 mt-3 md:border-none md:p-0 md:mt-0 md:w-auto">
+                      <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] pt-2  text-white    ">
                         <HiOutlineDocumentDuplicate size={30} /> Petitions
                       </button>
-                    </Link>{" "}
+                    </li>
+
+                    <div className="dropdown-content">
+                      <li className="border-t font-medium w-full  p-2.5 mt-3 md:border-none md:p-0 md:mt-0 md:w-auto">
+                        <Link to="/newpetitions">
+                          <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] pt-2  text-white    ">
+                            <HiOutlineDocumentDuplicate size={30} />
+                            New Petitions
+                          </button>
+                        </Link>
+                      </li>
+                      <li className="border-t font-medium w-full  p-2.5 mt-3 md:border-none md:p-0 md:mt-0 md:w-auto">
+                        <Link to="/ongoingpetitions">
+                          <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] pt-2  text-white    ">
+                            <HiOutlineDocumentDuplicate size={30} />
+                            Ongoing Petitions
+                          </button>
+                        </Link>
+                      </li>
+                      <li className="border-t font-medium w-full  p-2.5 mt-3 md:border-none md:p-0 md:mt-0 md:w-auto">
+                        <Link to="/closedpetitions">
+                          <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] pt-2  text-white    ">
+                            <HiOutlineDocumentDuplicate size={30} />
+                            Closed Petitions
+                          </button>
+                        </Link>
+                      </li>
+                    </div>
+                  </div>
+                  <li className="border-t font-medium w-full  p-2.5 mt-3 md:border-none md:p-0 md:mt-0 md:w-auto">
+                    <Link to="/pending">
+                      <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] pt-2  text-white    ">
+                        <HiOutlineDocumentDuplicate size={30} /> Reports
+                      </button>
+                    </Link>
                   </li>
                 </>
               )}
@@ -206,7 +291,7 @@ const Navbar = () => {
                   <Link to="/">
                     <button
                       onClick={logout}
-                      className=" w-[100%] flex flex-row gap-6 hover:rounded-lg hover:bg-[#694d27] py-2 text-white text-2xl"
+                      className=" w-[100%] flex flex-row gap-6 hover:rounded-lg hover:bg-[#694d27] pt-2 text-white "
                     >
                       <BiLogOut
                         size={30}
@@ -220,7 +305,7 @@ const Navbar = () => {
                 <li className="border-t font-medium w-full  p-2.5 mt-3 md:border-none md:p-0 md:mt-0 md:w-auto">
                   {" "}
                   <Link to="/login">
-                    <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] py-2  text-white  text-2xl ">
+                    <button className=" w-[100%] flex flex-row gap-6  hover:rounded-lg  hover:bg-[#694d27] pt-2  text-white   ">
                       <BiLogIn
                         size={30}
                         style={{ color: "white", fill: "white" }}

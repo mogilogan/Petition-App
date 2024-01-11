@@ -8,12 +8,16 @@ import Login from "./components/login/Logins";
 import Postpetition from "./components/formpage/Postpetition";
 import Home from "./components/Home";
 import Navbar from "./components/Navbar/Navbar";
-import Petitions from "./components/petitions/petitions";
+import Petitions from "./components/petitions/ClosedPetitions";
 import Petition from "./components/petitions/petition/petition";
 import Footer from "./components/footer/Footer";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Pending from "./components/Pending/Pending";
 import Report from "./components/Pending/Report";
+import NewPetitions from "./components/petitions/NewPetitions";
+import OngoingPetitions from "./components/petitions/OngoingPetitions";
+import ClosedPetitions from "./components/petitions/ClosedPetitions";
+import Search from "./components/Search/Search";
 
 function App() {
   const user = JSON.parse(localStorage.getItem("profile"));
@@ -26,12 +30,16 @@ function App() {
         {/* //route through */}
         <Routes>
           <Route path="/" Component={Home} />
+          <Route path="/search" Component={Search} />
           <Route path="/login" Component={Login} />
           <Route path="/add" Component={Postpetition} />
           <Route path="/dashboard" Component={Dashboard} />
-          <Route path="/petitions" Component={Petitions} />
+          <Route path="/newpetitions" Component={NewPetitions} />
+          <Route path="/ongoingpetitions" Component={OngoingPetitions} />
+          <Route path="/closedpetitions" Component={ClosedPetitions} />
           <Route path="/pending" Component={Pending} />
           <Route path="/report/:currentId" Component={Report} />
+          <Route path="/report/:preview" Component={Report} />
           <Route
             path="/petition/:currentId"
             exact={true}

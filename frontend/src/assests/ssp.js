@@ -1,34 +1,28 @@
 const sspData = {
   "SSP_L&O": {
     SP_EAST: {
-      SHO: [
+      CI_MUTHIALPET: ["SHO_KALAPET", "SHO_MUTHIALPET"],
+      CI: [
+        "CI_MUTHIALPET",
         "SHO_GRANDBAZAR",
         "SHO_ODEANSALAI",
         "SHO_ORLEANPET",
-        "SHO_KALAPET",
-        "SHO_MUTHIALPET",
       ],
-      CI: ["CI_MUTHIALPET"],
     },
 
     SP_NORTH: {
-      SHO: [
-        "SHO_LAWSPET",
-        "SHO_METTUPALAYAM",
-        "SHO_SHO_REDDIARPALAYAM",
-        "SHO_DNAGAR",
-        "SHO_SEDARAPET",
-      ],
-      CI: ["CI_METTUPALAYAM", "CI_DNAGAR"],
+      CI_METTUPALAYAM: ["SHO_METTUPALAYAM", "SHO_SHO_REDDIARPALAYAM"],
+      CI_METTUPALAYAM: ["SHO_DNAGAR", "SHO_SEDARAPET"],
+      CI: ["CI_METTUPALAYAM", "CI_DNAGAR", "SHO_LAWSPET"],
     },
 
     SP_YANAM: {
-      SHO: ["SHO_YANAM"],
+      CI_YANAM: ["SHO_YANAM"],
       CI: ["CI_YANAM"],
     },
 
     SP_MAHE: {
-      SHO: ["SHO_MAHE", "SHO_PALLOOR"],
+      CI_MAHE: ["SHO_MAHE", "SHO_PALLOOR"],
       CI: ["CI_MAHE"],
     },
 
@@ -50,93 +44,77 @@ const sspData = {
     },
 
     SP_WEST: {
-      SHO: [
-        "SHO_VILLIANUR",
-        "SHO_MANGALAM",
-        "SHO_SHO_NETTAPAKKAM",
-        "SHO_THIRUDHUVANAI",
-        "SHO_THIRUKKANUR",
-        "SHO_KATTERIKUPPAM",
-      ],
+      CI_VILLIANUR: ["SHO_VILLIANUR", "SHO_MANGALAM"],
+      CI_NETTAPAAKAM: ["SHO_SHO_NETTAPAKKAM", "SHO_THIRUDHUVANAI"],
+      CI_THIRUKKANUR: ["SHO_THIRUKKANUR", "SHO_KATTERIKUPPAM"],
       CI: ["CI_VILLIANUR", "CI_NETTAPAAKAM", "CI_THIRUKKANUR"],
     },
 
     SP_SOUTH: {
-      SHO: [
-        "SHO_MUDALIYARPET",
-        "SHO_BAHOUR",
-        "SHO_SHO_KARAIKALAMPAKKAM",
-        "SHO_PRIYANKUPPAM",
-        "SHO_THAVALAKUPPAM",
-      ],
-      CI: ["CI_BAHOUR", "CI_PIRIYANKUPPAM"],
+      CI_BAHOUR: ["SHO_BAHOUR", "SHO_SHO_KARAIKALAMPAKKAM"],
+      CI_ARIYANKUPPAM: ["SHO_PRIYANKUPPAM", "SHO_THAVALAKUPPAM"],
+      CI: ["CI_BAHOUR", "CI_ARIYANKUPPAM", "SHO_MUDALIYARPET"],
     },
   },
   SSP_CRI: {
     SP_CIDRB: {
-      INSPECTOR: ["INSPECTOR_CRB", "INSPECTOR_CID"],
+      CI: ["INSPECTOR_CRB", "INSPECTOR_CID"],
     },
 
     SP_SB: {
-      INSPECTOR: ["INSPECTOR_SBPDY", "INSPECTOR_SBPDY!", "INSPECTOR_SBKKL"],
+      CI: ["INSPECTOR_SBPDY", "INSPECTOR_SBPDY!", "INSPECTOR_SBKKL"],
     },
 
     SP_SIGMASECURITY: {
-      INSPECTOR: ["INSPECTOR_1", "INSPECTOR_2", "INSPECTOR_3"],
+      CI: ["INSPECTOR_1", "INSPECTOR_2", "INSPECTOR_3"],
     },
 
     SP_SIGMAINTELLIGENCE: {},
     SP_PCR: {
-      INSPECTOR: ["INSPECTOR_1"],
+      CI: ["INSPECTOR_1"],
     },
   },
   SSP_HQ: {
     SP_HQ: {},
     SP_CHIEFSTORES: {
-      INSPECTOR: ["INSPECTOR_CS"],
+      CI: ["INSPECTOR_CS"],
     },
 
     SP_PAP: {
-      INSPECTOR: ["INSPECTORPAP_1", "INSPECTORPAP_2", "INSPECTORPAP_3"],
+      CI: ["INSPECTORPAP_1", "INSPECTORPAP_2", "INSPECTORPAP_3"],
     },
 
     SP_MT: {
-      INSPECTOR: ["INSPECTOR_MT"],
+      CI: ["INSPECTOR_MT"],
     },
 
     SP_HG: {
-      INSPECTOR: ["INSPECTOR_HG"],
+      CI: ["INSPECTOR_HG"],
     },
 
     "SP_PTS&WELFARE": {
-      INSPECTOR: ["INSPECTOR_PTS"],
+      CI: ["INSPECTOR_PTS"],
     },
   },
-  SSP_TRAFFIC: [
-    {
-      SP_NE: {
-        SHO: ["TRAFFIC_SHO_EAST", "TRAFFIC_SHO_NORTH", "TRAFFIC_ENG_CELL"],
-      },
+  SSP_TRAFFIC: {
+    SP_NE: {
+      CI: ["TRAFFIC_SHO_EAST", "TRAFFIC_SHO_NORTH", "TRAFFIC_ENG_CELL"],
     },
-    {
-      SP_SW: {
-        SHO: ["TRAFFIC_SHO_SOUTH", "TRAFFIC_SHO_WEST"],
-      },
+
+    SP_SW: {
+      CI: ["TRAFFIC_SHO_SOUTH", "TRAFFIC_SHO_WEST"],
     },
-    {
-      SP_CYPER_PS: {
-        CI: ["INSPECTOR_1", "INSPECTOR_2"],
-      },
+
+    SP_CYPER_PS: {
+      CI: ["INSPECTOR_1", "INSPECTOR_2"],
     },
-    {
-      SP_CCTNS: {},
+
+    SP_CCTNS: {},
+
+    "SP_WIRELESS&CCR": {
+      CI: ["INSPECTOR_1", "INSPECTOR_2"],
     },
-    {
-      "SP_WIRELESS&CCR": {
-        CI: ["INSPECTOR_1", "INSPECTOR_2"],
-      },
-    },
-  ],
+  },
 };
 
 export { sspData };
