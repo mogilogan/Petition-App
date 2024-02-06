@@ -8,6 +8,7 @@ import {
   FETCHALL,
   ASSIGNINS,
   REPORT,
+  DASHBOARD,
 } from "../constants/actionTypes";
 
 export default (
@@ -27,6 +28,12 @@ export default (
       return { ...state, dashboard: action.payload.petitions };
     case FETCHALL:
       return { ...state, petitions: action.payload.petitions };
+    case DASHBOARD:
+      return {
+        ...state,
+        petitions: action.payload.petitions,
+        dashboard: action.payload,
+      };
 
     case ASSIGNSSP:
       return {

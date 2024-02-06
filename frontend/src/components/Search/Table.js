@@ -50,20 +50,28 @@ const Tables = () => {
 
   return (
     <div className=" flex flex-col items-center justify-center  ">
-      <h1 className="text-3xl text-[#0d193a] py-2 text-center font-libre">
+      <h1 className="text-3xl text-[rgb(2,1,1)] py-2 text-center font-libre">
         Check Complain Details and Status
       </h1>
 
-      <div class=" px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-100 hover:bg-gray-300 cursor-pointer rounded">
+      <div class=" flex items-center text-sm font-medium leading-none text-[white ]  cursor-pointer rounded">
         <p className="flex-none text-lg">Search By:</p>
         <select
           onChange={(e) => handleChange(e)}
-          class=" focus:text-indigo-600 focus:outline-none bg-transparent ml-1"
+          class=" focus:text-indigo-900 focus:outline-none border-black bg-transparent ml-1"
         >
-          <option value="id">Petition_id</option>
-          <option value="mail">Mail ID</option>
-          <option value="mobile">Mobile Number</option>
-          <option value="date">Date (YYYY/MM/DD)</option>
+          <option className="py-2" value="id">
+            Petition_id
+          </option>
+          <option className="py-2" value="mail">
+            Mail ID
+          </option>
+          <option className="py-2" value="mobile">
+            Mobile Number
+          </option>
+          <option className="py-2" value="date">
+            Date (YYYY/MM/DD)
+          </option>
         </select>
       </div>
 
@@ -95,7 +103,7 @@ const Tables = () => {
 
       {errmsg === undefined ? (
         <>
-          {petition?.length > 1 ? (
+          {petition?.length > 0 ? (
             <div>
               <div class="py-4 ">
                 <table class="w-full overflow-scroll shadow rounded">
@@ -103,7 +111,7 @@ const Tables = () => {
                     <tr class="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b border-gray-600">
                       <th class="px-4 py-3">Petition Number</th>
                       <th class="px-4 py-3">Petition Time</th>
-                      <th class="px-4 py-3">Status</th>
+                      <th class="px-4 py-3">Active Place</th>
                     </tr>
                   </thead>
                   <tbody class="bg-white">
@@ -121,29 +129,8 @@ const Tables = () => {
                         <td class="px-4 py-3 text-ms font-semibold border">
                           {item.time_stamp}
                         </td>
-                        <td class="px-4 py-3 text-xs border">
-                          {(() => {
-                            switch (true) {
-                              case item?.dept === null:
-                                return <>Pending</>;
-
-                              case item.dept != null && item.sub_dept === null:
-                                return <>Viewed by SSP</>;
-
-                              case item.sub_dept != null &&
-                                item.user_name === null:
-                                return <>Viewed by SP</>;
-
-                              case item?.user_name != null && item.closed === 0:
-                                return <>Ongoing</>;
-
-                              case item?.sub_dept != null && item.closed === 1:
-                                return <>Closed</>;
-
-                              default:
-                                return null;
-                            }
-                          })()}
+                        <td class="px-4 py-3 text-ms font-semibold border">
+                          {item.active_place}
                         </td>
                       </tr>
                     ))}

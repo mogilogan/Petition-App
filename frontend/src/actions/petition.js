@@ -18,7 +18,7 @@ export const addpetition = (formData) => async (dispatch) => {
 
     dispatch({ type: ADD, payload: data });
 
-    return data.message;
+    return data;
   } catch (error) {
     return error?.response?.data
       ? error.response.data

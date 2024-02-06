@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { Button, Input, TextField, Typography } from "@mui/material";
 
 import { signin } from "../../actions/auth";
 
@@ -13,16 +11,12 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // show password actions:
-  const [showpassword, setShowpassword] = useState(false);
-  const handleShowpassword = () => setShowpassword(!showpassword);
-  const [message, setMessage] = useState("");
-
   // handle login actions::
-  const handlelogin = (e) => {
+  const handlelogin = async (e) => {
     e.preventDefault();
-    const mess = -dispatch(signin(form, navigate));
-    setMessage(mess);
+    const mess = await dispatch(signin(form, navigate));
+
+    window.alert(mess);
   };
 
   //handle change actions:
@@ -30,61 +24,52 @@ const Login = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
 
   return (
-    <div className=" w-[100%]  flex flex-col min-h-[100vh] items-center justify-center md:ml-[25%]    bg-[#b6a072]">
-      <Typography className="py-8 text-center" component="h1" variant="h5">
-        Sign in
-      </Typography>
-
-      <form
-        class="bg-white max-w-lg mx-auto shadow rounded px-16 pt-6 pb-8 mb-4"
-        onSubmit={handlelogin}
-      >
-        <div class="mb-4">
-          <label
-            class="block text-gray-700 text-sm font-bold mb-2"
-            for="username"
-          >
-            Username
-          </label>
-          <Input
-            onChange={(e) => handleChange(e)}
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            name="user_name"
-            label="Username"
+    <div className=" w-[100%]  flex flex-col min-h-[100vh] items-center  justify-center md:ml-[20%]    bg-[#b4c9f0]">
+      <div class="sm:w-[50%] rounded-md bg-[#523e07] p-4 pt-0 shadow-lg">
+        <header class="flex h-24 items-center justify-between font-bold text-white">
+          <span className="text-xl">Login</span>
+        </header>
+        <form class="grid gap-3" onSubmit={handlelogin}>
+          <input
+            class="h-10 rounded-sm bg-emerald-100/50 px-2 text-emerald-950 placeholder:text-white focus:outline-none focus:ring focus:ring-emerald-400"
             type="text"
-            placeholder="Username"
-            variant="outlined"
-          />
-        </div>
-        <div class="mb-6">
-          <label
-            class="block text-gray-700 text-sm font-bold mb-2"
-            for="password"
-          >
-            Password
-          </label>
-          <Input
+            name="user_name"
+            placeholder="Enter your username"
             onChange={(e) => handleChange(e)}
-            class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-            name="password"
-            label="password"
-            type="password"
-            placeholder="******************"
-            variant="outlined"
           />
-          <p class="text-red-500 text-xs italic">{message}</p>
-        </div>
-        <div class="flex items-center justify-between">
-          <Button
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            variant="contained"
+
+          <input
+            class="h-10 rounded-sm bg-emerald-100/50 px-2 text-emerald-950 placeholder:text-white focus:outline-none focus:ring focus:ring-emerald-400"
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+            onChange={(e) => handleChange(e)}
+          />
+
+          <button
+            class="flex h-10 items-center justify-between rounded-sm bg-[#2b2103] px-2 text-emerald-100 transition-colors duration-300 hover:bg-black focus:outline-none focus:ring focus:ring-emerald-400"
             type="submit"
-            color="primary"
           >
-            submit
-          </Button>
-        </div>
-      </form>
+            <span>Sign In</span>
+            <span>
+              <svg
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="h-6 w-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                />
+              </svg>
+            </span>
+          </button>
+        </form>
+      </div>
+
       <br />
     </div>
   );

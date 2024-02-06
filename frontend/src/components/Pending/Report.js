@@ -9,19 +9,22 @@ import {
   getreport,
   returnreport,
 } from "../../actions/report";
-import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
+// import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 
-const initialState = {
-  petition_id: "",
-  close_report: "",
-  rank: "",
-  active_place: "",
-};
 const Report = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // get user
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+  const initialState = {
+    petition_id: "",
+    close_report: "",
+    rank: "",
+    active_place: "",
+    rank: user?.userData?.rank,
+    active_place: petition.active_place,
+    user_name: user?.userData?.user_name,
+  };
 
   const [form, setForm] = useState(initialState);
   const { currentId } = useParams();
@@ -96,7 +99,7 @@ const Report = () => {
   }, []);
 
   return (
-    <div className=" w-[100%] pt-16  flex flex-col min-h-[100vh] md:ml-[25%]  bg-[#b6a072] ">
+    <div className=" w-[100%] pt-16  flex flex-col min-h-[100vh] md:ml-[20%]  bg-[#b4c9f0] ">
       {petition ? (
         <div className="py-[40px]">
           <div className="max-w-[80%] mx-auto bg-white rounded-lg">
@@ -285,7 +288,7 @@ const Report = () => {
               <br />
             </div>
             <div className="py-4">
-              <DocViewer
+              {/* <DocViewer
                 pluginRenderers={DocViewerRenderers}
                 documents={docs}
                 config={{
@@ -296,7 +299,7 @@ const Report = () => {
                   },
                 }}
                 style={{ height: 600 }}
-              />
+              /> */}
             </div>
 
             {/* <a

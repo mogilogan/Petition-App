@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DatePicker from "react-date-picker";
 
@@ -8,6 +8,8 @@ import "react-quill/dist/quill.snow.css";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 
+import { jsPDF } from "jspdf";
+
 import { TextField } from "@mui/material";
 
 import { addpetition } from "../../actions/petition";
@@ -16,6 +18,7 @@ import Search from "./Search";
 import { type, category } from "../../assests/Typep";
 import { duplicatecheck } from "../../actions/report";
 import { Link, useNavigate } from "react-router-dom";
+import { CLEAR } from "../../constants/actionTypes";
 
 const modules = {
   toolbar: [
@@ -34,6 +37,9 @@ const modules = {
 
 const Postpetition = () => {
   // get user
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
 
   const { Ids } = useSelector((state) => state.duplicate);
@@ -58,18 +64,61 @@ const Postpetition = () => {
 
   const [form, setForm] = useState(initialState);
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   // main submit add function
   const handleaddPetition = async (e) => {
-    console.log("added");
     e.preventDefault();
-    setForm({ ...form, submitted_by: user?.userData?.user_name });
-    console.log(form);
+    let newDate = new Date();
+    let date = newDate;
+    console.log(user);
+    setForm({
+      ...form,
+      submitted_by: user?.userData?.user_name,
+      code: user?.userData?.code,
+    });
     const message = await dispatch(addpetition(form));
-    setForm(initialState);
-    window.alert(message);
+
+    var printWindow = window.open("", "", "height=400,width=800");
+    printWindow.document.write(
+      `<html><head><title>${message?.complain_details?.akn_num}</title>`
+    );
+    printWindow.document.write("</head><body>");
+    printWindow.document
+      .write(`     <div style={{ backgroundColor: '#fff', width: '85%', margin: '0 auto', borderRadius: '1.5rem', padding: '2rem', marginBottom: '1rem' }}>
+      <h2 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '1rem' }}>Submitted Data</h2>
+      <div  style={{ backgroundColor: '#ffaaaa', width: '20%' }}>
+      <p>
+          <span style={{ fontWeight: 'bold' }}>Aknowledgement Date:</span> ${date}
+        </p>
+      <p>
+          <span style={{ fontWeight: 'bold' }}>Aknowledgement Number:</span> ${message?.complain_details?.akn_num}
+        </p>
+        <p>
+          <span style={{ fontWeight: 'bold' }}>Person name:</span> ${form.p_name}
+        </p>
+        <p>
+          <span style={{ fontWeight: 'bold' }}>Mobile Number:</span> ${form.mobile_num}
+        </p>
+        <p>
+          <span style={{ fontWeight: 'bold' }}>Mail Id:</span> ${form.mail}
+        </p>
+        <p>
+          <span style={{ fontWeight: 'bold' }}>Address:</span> ${form.address}
+        </p>
+        <p>
+          <span style={{ fontWeight: 'bold' }}>Type of Petition:</span> ${form.type}
+        </p>
+        <p>
+          <span style={{ fontWeight: 'bold' }}>Nature of Petition:</span> ${form.category}
+        </p>
+        <p>
+          <span style={{ fontWeight: 'bold' }}>Description:</span> ${form.description}
+        </p>
+      </div>
+    </div>`);
+    printWindow.document.write("</body></html>");
+    printWindow.print();
+    printWindow.document.close();
+    setShowModal(false);
   };
 
   // date select separate function for updating state
@@ -99,9 +148,9 @@ const Postpetition = () => {
   };
 
   return (
-    <div className=" w-[100%] pt-16 mx-auto md:ml-[25%]   bg-[#b6a072] ">
+    <div className=" w-[100%] pt-16 mx-auto md:ml-[20%]   bg-[#b4c9f0] ">
       <p
-        className="py-5 text-xl md:text-4xl font-libre text-center text-white"
+        className="py-5 text-xl md:text-4xl font-graduate text-center text-black"
         component="h1"
         variant="h5"
       >
@@ -110,16 +159,23 @@ const Postpetition = () => {
 
       {/* form for petition addition */}
       <form
+        id="add-pet"
         className="bg-white w-[85%] mx-auto rounded-3xl px-8 pt-6 pb-8 mb-4"
         onSubmit={handleaddPetition}
       >
-        <div class="grid grid-cols-2 gap-4 max-w-xl m-auto">
+        <div className="bounce">
+          <p>
+            Please Fill in the Details below Correctly! Once Submitted, It
+            cannot be Edited.
+          </p>
+        </div>
+        <div class="grid grid-cols-2 gap-4 py-4 max-w-xl m-auto">
           <div class="col-span-2 lg:col-span-1">
             <label
               className="requireds block text-gray-700 text-sm font-bold mb-2"
               for="username"
             >
-              Person name:
+              Full Name:
             </label>
             <TextField
               className=" shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -361,7 +417,6 @@ const Postpetition = () => {
                       <button
                         className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                         type="submit"
-                        onClick={handleaddPetition}
                       >
                         ADD Petition
                       </button>

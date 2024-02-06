@@ -14,6 +14,8 @@ export const ASSIGNSHO = "ASSIGNSHO";
 export const END_LOADING = "END_LOADING";
 export const START_LOADING = "START_LOADING";
 
+export const DASHBOARD = "DASHBOARD";
+
 export const REPORT = "REPORT";
 export const DUPLICATE = "DUPLICATE";
 

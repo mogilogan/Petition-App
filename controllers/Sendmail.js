@@ -1,7 +1,8 @@
 const nodemailer = require("nodemailer");
 
-const sendmail = (req) => {
-  const { mail, petition_id, p_name, closemsg, akn_num } = req;
+const sendmail = async (req) => {
+  const { mail, mobile_num, petition_id, p_name, closemsg, akn_num } = req;
+
   let transporter = nodemailer.createTransport({
     service: "gmail",
     host: "smtp.gmail.com",
@@ -35,7 +36,7 @@ const sendmail = (req) => {
 
   transporter.sendMail(mailOptions, function (err, data) {
     if (err) {
-      console.log(err);
+      console.log(err.message);
     } else {
       console.log("Email sent successfully");
     }

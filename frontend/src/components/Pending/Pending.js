@@ -45,7 +45,7 @@ const Pending = () => {
   };
 
   return (
-    <div className=" w-[100%] pt-16 flex flex-col min-h-[100vh]  md:ml-[25%]   bg-[#b6a072] ">
+    <div className=" w-[100%] pt-16 flex flex-col min-h-[100vh]  md:ml-[20%]   bg-[#b4c9f0] ">
       <section class="container mx-auto p-6 font-mono">
         <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
           <div class="w-full overflow-x-auto">

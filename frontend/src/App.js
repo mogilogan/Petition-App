@@ -18,6 +18,8 @@ import NewPetitions from "./components/petitions/NewPetitions";
 import OngoingPetitions from "./components/petitions/OngoingPetitions";
 import ClosedPetitions from "./components/petitions/ClosedPetitions";
 import Search from "./components/Search/Search";
+import Teams from "./components/Teams/Teams";
+import Contact from "./components/Teams/Contact";
 
 function App() {
   const user = JSON.parse(localStorage.getItem("profile"));
@@ -40,6 +42,8 @@ function App() {
           <Route path="/pending" Component={Pending} />
           <Route path="/report/:currentId" Component={Report} />
           <Route path="/report/:preview" Component={Report} />
+          <Route path="/teams" Component={Teams} />
+          <Route path="/contact" Component={Contact} />
           <Route
             path="/petition/:currentId"
             exact={true}

@@ -46,7 +46,7 @@ const ClosedPetitions = () => {
   };
 
   return (
-    <div className=" w-[100%] pt-16 flex flex-col min-h-[100vh]  md:ml-[25%]   bg-[#b6a072] ">
+    <div className=" w-[100%] pt-16 flex flex-col min-h-[100vh]  md:ml-[20%]   bg-[#b4c9f0] ">
       <div className="flex flex-row justify-center">
         <div class=" px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
           <p className="flex-none text-lg">Filter By:</p>

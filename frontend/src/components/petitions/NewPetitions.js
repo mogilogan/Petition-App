@@ -182,7 +182,7 @@ const NewPetitions = () => {
   };
 
   return (
-    <div className=" w-[100%] pt-16 flex flex-col min-h-[100vh]  md:ml-[25%]   bg-[#b6a072] ">
+    <div className=" w-[100%] pt-16 flex flex-col min-h-[100vh]  md:ml-[20%]   bg-[#b4c9f0]">
       <div className="flex flex-row justify-center">
         {(user?.userData?.rank === "2" ||
           user?.userData?.rank === "3" ||

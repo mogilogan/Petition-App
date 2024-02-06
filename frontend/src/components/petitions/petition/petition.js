@@ -83,7 +83,7 @@ const Petition = () => {
   filteredData.sort((a, b) => a.date - b.date);
 
   return (
-    <div className=" w-[100%] pt-16  flex flex-col min-h-[100vh] md:ml-[25%]  bg-[#b6a072] ">
+    <div className=" w-[100%] pt-16  flex flex-col min-h-[100vh] md:ml-[20%]  bg-[#b4c9f0] ">
       {petition[0] ? (
         <div className="py-[40px]">
           <div className="max-w-[80%] mx-auto bg-white rounded-lg">
@@ -220,7 +220,7 @@ const Petition = () => {
                       <td class="px-4 py-3   border">
                         CREATED BY {petition[0]?.submitted_by}
                       </td>
-                      <td class="px-4 py-3 border">CREATED TIME</td>
+                      <td class="px-4 py-3 border">-</td>
                       <td class="px-4 py-3  border">
                         {created.toLocaleDateString("en-US")}
                       </td>

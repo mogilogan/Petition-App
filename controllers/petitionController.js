@@ -75,7 +75,9 @@ const fetchallnew = (req, res) => {
           pool.query(
             "SELECT p.* FROM petition_info p JOIN(SELECT f.petition_id FROM forwarded_table f WHERE JSON_SEARCH(f.forwards, 'one', '" +
               user_name +
-              "') IS NOT NULL)AS combined ON p.petition_id = combined.petition_id ORDER BY p.time_stamp DESC",
+              "') IS NOT NULL)AS combined ON p.petition_id = combined.petition_id\
+              LEFT JOIN petition_subdept sub ON p.petition_id = sub.petition_id  WHERE sub.petition_id IS NULL\
+              ORDER BY p.time_stamp DESC",
 
             (err, results) => {
               if (err) return handleSQLError(res, err);
@@ -222,7 +224,7 @@ const fetchallnew = (req, res) => {
               WHERE user_name = '" +
               user_name +
               "' \
-          ) AS combined ON p.petition_id = combined.petition_id  AND p.petition_id NOT IN (SELECT petition_id from report); ORDER BY p.time_stamp DESC",
+          ) AS combined ON p.petition_id = combined.petition_id  AND p.petition_id NOT IN (SELECT petition_id from report) ORDER BY p.time_stamp DESC;",
 
             (err, results) => {
               if (err) return handleSQLError(res, err);
@@ -711,9 +713,8 @@ const addPetition = async (req, res, next) => {
     category,
     code,
   } = req.body;
-  console.log(submitted_by);
-  pool.query(
-    " INSERT INTO petition_info (type,category,description,end_date,p_name,mail,mobile_num,address,submitted_by,image) VALUES ('" +
+  await pool.query(
+    "INSERT INTO petition_info (type,category,description,end_date,p_name,mail,mobile_num,address,submitted_by,image) VALUES ('" +
       type +
       "', '" +
       category +
@@ -734,7 +735,7 @@ const addPetition = async (req, res, next) => {
       "', '" +
       image +
       "'); ",
-    (err, results) => {
+    async (err, results) => {
       if (err) {
         if (err.code === "ER_DUP_ENTRY")
           return res.status(409).send(`Could not Add Petition.`);
@@ -746,16 +747,24 @@ const addPetition = async (req, res, next) => {
       const d = new Date();
       let year = d.getFullYear();
       const akn_num = year.toString() + "/" + code + "/" + petition_id;
+      console.log(akn_num);
+
+      //send mail
+      sendmail({ mail, petition_id, p_name, akn_num, mobile_num });
 
       //update akn_num in same id
-      pool.query(
+      await pool.query(
         "UPDATE petition_info SET akn_num = CONCAT('" +
           year +
           "','/','" +
           code +
           "','/',petition_id) WHERE petition_id='" +
           petition_id +
-          "';",
+          "';INSERT INTO forwarded_table (petition_id,forwards) VALUES ('" +
+          results.insertId +
+          "', '" +
+          forwarded +
+          "');",
         (err, cresults) => {
           if (err) {
             if (err.code === "ER_DUP_ENTRY")
@@ -764,29 +773,12 @@ const addPetition = async (req, res, next) => {
           }
         }
       );
-
-      //send mail
-      sendmail({ mail, petition_id, p_name, akn_num });
-
-      // forwared table insert
-      pool.query(
-        " INSERT INTO forwarded_table (petition_id,forwards) VALUES ('" +
-          results.insertId +
-          "', '" +
-          forwarded +
-          "'); ",
-        (err, fresults) => {
-          if (err) {
-            if (err.code === "ER_DUP_ENTRY")
-              return res.status(409).send(`Could not Add forwared`);
-            return handleSQLError(res, err);
-          }
-        }
-      );
-
       return res.status(201).json({
         message: "Petition Successfully Created",
-        complain_details: { complain_id: results.insertId },
+        complain_details: {
+          complain_id: results.insertId,
+          akn_num: akn_num,
+        },
       });
     }
   );
