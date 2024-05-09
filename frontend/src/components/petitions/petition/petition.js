@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { statuscheck } from "../../../actions/status";
 import { addreport } from "../../../actions/report";
 import { Button } from "@mui/material";
+import { Document, Page } from 'react-pdf';
 
 const initialState = {
   petition_id: "",
@@ -81,7 +82,12 @@ const Petition = () => {
     (item) => item.date !== null && item.data !== null
   );
   filteredData.sort((a, b) => a.date - b.date);
+  const [numPages, setNumPages] = useState();
+  const [pageNumber, setPageNumber] = useState(1);
 
+  function onDocumentLoadSuccess({ numPages }){
+    setNumPages(numPages);
+  }
   return (
     <div className=" w-[100%] pt-16  flex flex-col min-h-[100vh] md:ml-[20%]  bg-[#b4c9f0] ">
       {petition[0] ? (
@@ -245,7 +251,14 @@ const Petition = () => {
 
               <div>
                 <p className="py-10px">Document:</p>
-                <img src={petition[0].image} />
+                <div>
+                <Document file={petition[0]?.image} onLoadSuccess={onDocumentLoadSuccess}>
+                <Page pageNumber={pageNumber} />
+      </Document>
+      <p className="mx-auto">
+        Page {pageNumber} of {numPages}
+      </p>
+    </div>
               </div>
 
               <br />

@@ -15,7 +15,7 @@ const Inter = ({ petitions, setShow }) => {
           petitions[0]?.length + petitions[1]?.length + petitions[2]?.length
         } Total`,
         verticalAlign: "center",
-        fontSize: 24,
+        fontSize: 20,
         dockInsidePlotArea: true,
       },
     ],
@@ -25,6 +25,7 @@ const Inter = ({ petitions, setShow }) => {
         indexLabelFontFamily: "serif",
         indexLabelFontSize: 18,
         startAngle: 240,
+
         type: "doughnut",
         showInLegend: true,
         indexLabel: "{name}: {y}",
@@ -50,7 +51,7 @@ const Inter = ({ petitions, setShow }) => {
     ],
   };
   return (
-    <section className="items-center flex justify-center py-2">
+    <section className="items-center glitter flex justify-center py-2">
       <CanvasJSChart
         options={options}
         containerProps={{ width: "80%", height: "300px" }}

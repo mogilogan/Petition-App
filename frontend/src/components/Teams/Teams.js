@@ -1,177 +1,88 @@
 import React from "react";
 
-import { FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
-
 import madesh from "../../assests/madesh.jpeg";
 import mogi from "../../assests/mogi.jpeg";
 import kamal from "../../assests/kamal.jpg";
+import jaymam from "../../assests/jaymam.jpg";
+import narsir from "../../assests/narsir.jpg";
+import vamsir from "../../assests/vamsir.jpg";
 
 const Teams = () => {
   return (
     <div className=" mx-auto w-full flex flex-col min-h-[100vh] items-center bg-[#b4c9f0] justify-center  md:ml-[20%] ">
-      <div class="flex items-center justify-center  py-48">
-        <div class="flex flex-col mt-8">
-          <div class="container max-w-7xl px-4">
-            <div class="flex flex-wrap justify-center text-center mb-24">
-              <div class="w-full lg:w-6/12 px-4">
-                <h1 class="text-gray-900 text-4xl font-bold mb-8">
-                  Meet the Team
-                </h1>
+      <section class="py-6 dark:bg-gray-800 dark:text-gray-100">
+        <div class="container flex flex-col items-center justify-center p-4 mx-auto space-y-8 sm:p-10">
+          <h1 class="text-4xl font-bold leadi text-center sm:text-4xl">TEAM</h1>
 
-                <p class="text-gray-700 pb-10 text-lg font-light">
-                  Students of ECE Department from Puducherry technological
-                  University developed this project
-                </p>
-              </div>
-
-              <div class="flex flex-wrap justify-center items-center">
-                <div class="w-full md:w-6/12 lg:w-3/12 mb-6 px-6 sm:px-6 lg:px-4">
-                  <div class="flex flex-col">
-                    <a href="#" class="mx-auto">
-                      <img
-                        class="rounded-2xl drop-shadow-md hover:drop-shadow-xl transition-all duration-200 delay-100"
-                        src={madesh}
-                      />
-                    </a>
-
-                    <div class="text-center mt-6">
-                      <h1 class="text-gray-900 text-xl font-bold mb-1">
-                        Madesh varadhan
-                      </h1>
-
-                      <div class="text-gray-700 font-light mb-2">
-                        Database and Query manager
-                      </div>
-
-                      <div
-                        class="flex items-center justify-center opacity-50 hover:opacity-100
-                                transition-opacity duration-300"
-                      >
-                        <a
-                          href="https://github.com/madmaddy2003"
-                          target="_blank"
-                          class="flex rounded-full hover:bg-indigo-50 h-10 w-10"
-                        >
-                          <FaGithub />
-                        </a>
-
-                        <a
-                          href="https://www.linkedin.com/in/madesh-varadhan-v-0b6968277/"
-                          target="_blanl"
-                          class="flex rounded-full hover:bg-blue-50 h-10 w-10"
-                        >
-                          <FaLinkedin />
-                        </a>
-
-                        <a
-                          href="https://www.instagram.com/maddy_maddy_03/"
-                          target="_blank"
-                          class="flex rounded-full hover:bg-orange-50 h-10 w-10"
-                        >
-                          <FaInstagram />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="w-full md:w-6/12 lg:w-3/12 mb-6 px-6 sm:px-6 lg:px-4">
-                  <div class="flex flex-col">
-                    <a href="#" class="mx-auto">
-                      <img
-                        class="rounded-2xl drop-shadow-md hover:drop-shadow-xl transition-all duration-200 delay-100"
-                        src={mogi}
-                      />
-                    </a>
-
-                    <div class="text-center mt-6">
-                      <h1 class="text-gray-900 text-xl font-bold mb-1">
-                        Moginder
-                      </h1>
-
-                      <div class="text-gray-700 font-light mb-2">
-                        Full Stack Developer
-                      </div>
-
-                      <div
-                        class="flex items-center justify-center opacity-50 hover:opacity-100
-                                transition-opacity duration-300"
-                      >
-                        <a
-                          href="https://github.com/mogilogan"
-                          target="_blank"
-                          class="flex rounded-full hover:bg-indigo-50 h-10 w-10"
-                        >
-                          <FaGithub />
-                        </a>
-
-                        <a
-                          href="https://www.linkedin.com/in/mogiegan/"
-                          target="_blanl"
-                          class="flex rounded-full hover:bg-blue-50 h-10 w-10"
-                        >
-                          <FaLinkedin />
-                        </a>
-
-                        <a
-                          href="https://www.instagram.com/m.o.g.i_n.d.e.r/"
-                          target="_blank"
-                          class="flex rounded-full hover:bg-orange-50 h-10 w-10"
-                        >
-                          <FaInstagram />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="w-full md:w-6/12 lg:w-3/12 mb-6 px-6 sm:px-6 lg:px-4">
-                  <div class="flex flex-col">
-                    <a href="#" class="mx-auto">
-                      <img
-                        width={220}
-                        class="rounded-2xl drop-shadow-md hover:drop-shadow-xl transition-all duration-200 delay-100"
-                        src={kamal}
-                      />
-                    </a>
-
-                    <div class="text-center mt-6">
-                      <h1 class="text-gray-900 text-xl font-bold mb-1">
-                        kamalesh Kumar
-                      </h1>
-
-                      <div class="text-gray-700 font-light mb-2">
-                        Ui-ux and Design
-                      </div>
-
-                      <div
-                        class="flex items-center justify-center opacity-50 hover:opacity-100
-                                transition-opacity duration-300"
-                      >
-                        <a
-                          href="https://github.com/kambooosss"
-                          target="_blank"
-                          class="flex rounded-full hover:bg-indigo-50 h-10 w-10"
-                        >
-                          <FaGithub />
-                        </a>
-
-                        <a
-                          href="https://www.linkedin.com/in/kamlesh-kumar-b428251b5/"
-                          target="_blanl"
-                          class="flex rounded-full hover:bg-blue-50 h-10 w-10"
-                        >
-                          <FaLinkedin />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div class="flex flex-row flex-wrap justify-center">
+            <div class="flex flex-col justify-center m-8 text-center">
+              <img
+                alt=""
+                class="self-center flex-shrink-0 w-24 h-24 mb-4 bg-center bg-cover rounded-full dark:bg-gray-500"
+                src={narsir}
+              />
+              <p class="text-xl font-semibold leadi">Mr. Narra Chaitanya IPS</p>
+              <p class="dark:text-gray-400">SSP - L&O - Puducherry</p>
+            </div>
+            <div class="flex flex-col justify-center m-8 text-center">
+              <img
+                alt=""
+                class="self-center flex-shrink-0 w-24 h-24 mb-4 bg-center bg-cover rounded-full dark:bg-gray-500"
+                src={vamsir}
+              />
+              <p class="text-xl font-semibold leadi">
+                Mr. A/c Vamseedhara Reddy Datla PPS
+              </p>
+              <p class="dark:text-gray-400">SP (West)</p>
+            </div>
+          </div>
+          <div class="flex flex-col justify-center m-8 text-center">
+            <img
+              alt=""
+              class="self-center flex-shrink-0 w-24 h-24 mb-4 bg-center bg-cover rounded-full dark:bg-gray-500"
+              src={jaymam}
+            />
+            <p class="text-xl font-semibold leadi">Dr. K. Jayanthi</p>
+            <p class="dark:text-gray-400">
+              B.Tech., M.Tech., Ph.D., MISTE <br />
+              PROFESSOR
+            </p>
+          </div>
+          <p class="max-w-2xl text-center dark:text-gray-400">
+            Students of ECE Department from Puducherry technological University
+            developed this project
+          </p>
+          <div class="flex flex-row flex-wrap justify-center">
+            <div class="flex flex-col justify-center m-8 text-center">
+              <img
+                alt=""
+                class="self-center flex-shrink-0 w-24 h-24 mb-4 bg-center bg-cover rounded-full dark:bg-gray-500"
+                src={madesh}
+              />
+              <p class="text-xl font-semibold leadi">Madesh Varadhan</p>
+              <p class="dark:text-gray-400">Database Manager</p>
+            </div>
+            <div class="flex flex-col justify-center m-8 text-center">
+              <img
+                alt=""
+                class="self-center flex-shrink-0 w-24 h-24 mb-4 bg-center bg-cover rounded-full dark:bg-gray-500"
+                src={mogi}
+              />
+              <p class="text-xl font-semibold leadi">Moginder</p>
+              <p class="dark:text-gray-400">Full Stack Developer</p>
+            </div>
+            <div class="flex flex-col justify-center m-8 text-center">
+              <img
+                alt=""
+                class="self-center flex-shrink-0 w-24 h-24 mb-4 bg-center bg-cover rounded-full dark:bg-gray-500"
+                src={kamal}
+              />
+              <p class="text-xl font-semibold leadi">Kamalesh Kumar</p>
+              <p class="dark:text-gray-400">Ui/Ux</p>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };

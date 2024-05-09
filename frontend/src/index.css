@@ -181,3 +181,47 @@ select {
 canvas {
   margin: 0 auto !important;
 }
+
+.butt {
+  border-radius: 4px;
+  background-color: #5ca1e1;
+  border: none;
+  color: #fff;
+  text-align: center;
+  font-size: 20px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 150px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 36px;
+  box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.7);
+}
+
+.butt {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.butt:after {
+  content: "»";
+  position: absolute;
+  opacity: 0;
+
+  right: -20px;
+  transition: 0.5s;
+}
+
+.butt:hover {
+  padding-right: 24px;
+  padding-left: 8px;
+}
+
+.butt:hover:after {
+  opacity: 1;
+  right: 10px;
+}

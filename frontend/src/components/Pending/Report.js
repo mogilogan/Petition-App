@@ -9,7 +9,7 @@ import {
   getreport,
   returnreport,
 } from "../../actions/report";
-// import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
+import { Document, Page } from 'react-pdf';
 
 const Report = () => {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ const Report = () => {
 
   const { petition } = useSelector((state) => state.status);
 
-  const docs = [{ uri: petition.evidence }];
+
 
   const created = new Date(petition.time_stamp);
   const depttime = new Date(petition.dept_time);
@@ -97,6 +97,13 @@ const Report = () => {
   useEffect(() => {
     fetch();
   }, []);
+
+  const [numPages, setNumPages] = useState();
+  const [pageNumber, setPageNumber] = useState(1);
+
+  function onDocumentLoadSuccess({ numPages }){
+    setNumPages(numPages);
+  }
 
   return (
     <div className=" w-[100%] pt-16  flex flex-col min-h-[100vh] md:ml-[20%]  bg-[#b4c9f0] ">
@@ -288,27 +295,15 @@ const Report = () => {
               <br />
             </div>
             <div className="py-4">
-              {/* <DocViewer
-                pluginRenderers={DocViewerRenderers}
-                documents={docs}
-                config={{
-                  header: {
-                    disableHeader: true,
-                    disableFileName: false,
-                    retainURLParams: false,
-                  },
-                }}
-                style={{ height: 600 }}
-              /> */}
+            <Document file={petition?.evidence} onLoadSuccess={onDocumentLoadSuccess}>
+        <Page pageNumber={pageNumber} />
+      </Document>
+      <p>
+        Page {pageNumber} of {numPages}
+      </p>
             </div>
 
-            {/* <a
-              href={petition.evidence}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Open First PDF
-            </a> */}
+           
 
             <form class=" max-w-lg mx-auto  rounded px-16 pt-6 pb-8 mb-4">
               <textarea

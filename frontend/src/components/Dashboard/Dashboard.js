@@ -133,8 +133,8 @@ const Dashboard = () => {
         </div>
       </div>
       {petitions && (
-        <section className=" shadow-inner-blue-neumorphism-xl px-4 rounded-[10px] py-2">
-          <p className=" text-lg md:text-4xl font-rampart-one glitter text-[#b9f1ff] ">
+        <section className=" shadow-inner-blue-neumorphism-xl w-[50%] md:w-[80%] px-4 rounded-[10px] py-2">
+          <p className=" text-lg md:text-3xl text-center  font-mono font-semibold  text-[#000000] ">
             Overall Petition Progress
           </p>
           <Inter petitions={petitions} setShow={handleshow} />

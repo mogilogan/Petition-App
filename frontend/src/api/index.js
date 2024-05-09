@@ -3,7 +3,7 @@ import axios from "axios";
 //re routed APi Gateway end point for aws : https://wh4wikk843.execute-api.ap-south-1.amazonaws.com/
 
 const API = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://wh4wikk843.execute-api.ap-south-1.amazonaws.com/",
 });
 
 API.interceptors.request.use((req) => {

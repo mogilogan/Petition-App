@@ -17,8 +17,10 @@ import Search from "./Search";
 
 import { type, category } from "../../assests/Typep";
 import { duplicatecheck } from "../../actions/report";
-import { Link, useNavigate } from "react-router-dom";
+import { Await, Link, useNavigate } from "react-router-dom";
 import { CLEAR } from "../../constants/actionTypes";
+
+import pypol from "../../assests/pypol-embl.jpg";
 
 const modules = {
   toolbar: [
@@ -77,48 +79,74 @@ const Postpetition = () => {
     });
     const message = await dispatch(addpetition(form));
 
-    var printWindow = window.open("", "", "height=400,width=800");
+    var printWindow = window.open("", "Print Window", "height=800,width=800");
     printWindow.document.write(
-      `<html><head><title>${message?.complain_details?.akn_num}</title>`
-    );
-    printWindow.document.write("</head><body>");
-    printWindow.document
-      .write(`     <div style={{ backgroundColor: '#fff', width: '85%', margin: '0 auto', borderRadius: '1.5rem', padding: '2rem', marginBottom: '1rem' }}>
-      <h2 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '1rem' }}>Submitted Data</h2>
-      <div  style={{ backgroundColor: '#ffaaaa', width: '20%' }}>
-      <p>
-          <span style={{ fontWeight: 'bold' }}>Aknowledgement Date:</span> ${date}
-        </p>
-      <p>
-          <span style={{ fontWeight: 'bold' }}>Aknowledgement Number:</span> ${message?.complain_details?.akn_num}
-        </p>
-        <p>
-          <span style={{ fontWeight: 'bold' }}>Person name:</span> ${form.p_name}
-        </p>
-        <p>
-          <span style={{ fontWeight: 'bold' }}>Mobile Number:</span> ${form.mobile_num}
-        </p>
-        <p>
-          <span style={{ fontWeight: 'bold' }}>Mail Id:</span> ${form.mail}
-        </p>
-        <p>
-          <span style={{ fontWeight: 'bold' }}>Address:</span> ${form.address}
-        </p>
-        <p>
-          <span style={{ fontWeight: 'bold' }}>Type of Petition:</span> ${form.type}
-        </p>
-        <p>
-          <span style={{ fontWeight: 'bold' }}>Nature of Petition:</span> ${form.category}
-        </p>
-        <p>
-          <span style={{ fontWeight: 'bold' }}>Description:</span> ${form.description}
-        </p>
+      `<html><head><title>${message?.complain_details?.akn_num}</title></head><body>
+      <div style="display: flex; flex-direction: column; align-items: center;">
+      <div style="border: 2px solid #000; width:85%; display: flex;">
+       
+          <img src="${pypol}" alt="Your Image" style=" width: 200px;">
+    
+        <div style="flex-grow: 3;">
+          <h2 style="text-align:center;">Government of Puducherry</h2>
+          <h4 style="text-align:center;">Petition Monitoring System(PMS)</h4>
+          <h5 style="text-decoration: underline;text-align:center;">ACKNOWLEDGEMENT</h5>
+        </div>
       </div>
-    </div>`);
-    printWindow.document.write("</body></html>");
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center;">
+      <div style="border: 2px solid #000; width: 85%;   margin-bottom: 1rem;">
+        <h2 style="font-size: 2rem; font-weight: bold; margin-bottom: 1rem; text-align:center;">Submitted Data</h2>
+        <div style="background-color: #ffaaaa; padding: 10px;">
+      <table style="width: 100%;">
+        <tr>
+          <td style="font-weight: bold;">Acknowledgement Date:</td>
+          <td> ${date}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold;">Acknowledgement Number:</td>
+          <td>${message?.complain_details?.akn_num}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold;">Person name:</td>
+          <td> ${form?.p_name}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold;">Mobile Number:</td>
+          <td> ${form?.mobile_num}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold;">Mail Id:</td>
+          <td>${form?.mail}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold;">Address:</td>
+          <td> ${form?.address}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold;">Type of Petition:</td>
+          <td>${form.type}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold;">Nature of Petition:</td>
+          <td>${form.category}</td>
+        </tr>
+        
+      </table>
+    </div>
+    </div>
+      </div>
+    </div>
+    </body></html>`
+    );
     printWindow.print();
-    printWindow.document.close();
+    closedocs(printWindow);
     setShowModal(false);
+    navigate("/");
+  };
+
+  const closedocs = (printWindow) => {
+    printWindow.close();
   };
 
   // date select separate function for updating state
@@ -313,12 +341,12 @@ const Postpetition = () => {
               class="block text-gray-700 text-sm font-bold mb-2"
               for="file"
             >
-              Upload File (JPG or JPEG, max 1MB):
+              Upload File (Pdf - max 1MB):
             </label>
             <input
               type="file"
               name="file"
-              accept=".jpg, .jpeg"
+              accept=".pdf"
               onChange={(e) => {
                 const file = e.target.files[0];
                 if (file && file.size <= 1000000) {
