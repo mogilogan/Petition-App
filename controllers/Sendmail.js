@@ -1,16 +1,15 @@
 const nodemailer = require("nodemailer");
 
-const sendmail = (req) => {
-  const { mail, petition_id, p_name, closemsg } = req;
+const sendmail = async (req) => {
+  const { mail, mobile_num, petition_id, p_name, closemsg, akn_num } = req;
+
   let transporter = nodemailer.createTransport({
     service: "gmail",
+    host: "smtp.gmail.com",
+    port: 587,
     auth: {
-      type: "OAuth2",
       user: process.env.MAIL_ID,
       pass: process.env.PASSWORD,
-      clientId: process.env.CLIENT_ID,
-      clientSecret: process.env.CLIENT_SECRET,
-      refreshToken: process.env.REFRESH_TOKEN,
     },
     tls: {
       rejectUnauthorized: false,
@@ -24,7 +23,7 @@ const sendmail = (req) => {
       from: "pypetiton@gmail.com",
       to: mail,
       subject: "Petition Request Accepted",
-      text: `Dear ${p_name}, Your petition with peititon ID:${petition_id} has been successfully accepted and forwarded!`,
+      html: `<div><h1>Dear ${p_name}</h1><p>Your petition with Acknowledgement Number:${akn_num} has been successfully accepted and forwarded!</p></div>`,
     };
   } else {
     mailOptions = {
@@ -37,7 +36,7 @@ const sendmail = (req) => {
 
   transporter.sendMail(mailOptions, function (err, data) {
     if (err) {
-      console.log("Error " + err);
+      console.log(err.message);
     } else {
       console.log("Email sent successfully");
     }

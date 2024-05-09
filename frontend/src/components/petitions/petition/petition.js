@@ -2,17 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { statuscheck } from "../../../actions/status";
-import Table from "../../Status/Table";
 import { addreport } from "../../../actions/report";
 import { Button } from "@mui/material";
-
-// import Timeline from "@mui/lab/Timeline";
-// import TimelineItem from "@mui/lab/TimelineItem";
-// import TimelineSeparator from "@mui/lab/TimelineSeparator";
-// import TimelineConnector from "@mui/lab/TimelineConnector";
-// import TimelineContent from "@mui/lab/TimelineContent";
-// import TimelineDot from "@mui/lab/TimelineDot";
-// import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
+import { Document, Page } from 'react-pdf';
 
 const initialState = {
   petition_id: "",
@@ -30,25 +22,14 @@ const Petition = () => {
 
   const { petition } = useSelector((state) => state.status);
 
-  const created = new Date(petition.time_stamp);
-  const depttime = new Date(petition.dept_time);
-  const subtime = new Date(petition.sub_time);
-  const shotime = new Date(petition.sho_time);
-
-  const formatDate = created.toLocaleDateString("en-US");
-
-  // Format time (e.g., 'HH:mm:ss')
-  const formatTime = created.toLocaleTimeString("en-US");
-
   const currentIds = currentId.slice(1);
 
   const fetch = async () => {
-    dispatch(statuscheck({ petition_id: currentIds }));
+    dispatch(statuscheck({ search_by: "id", search_item: currentIds }));
     setForm({ ...form, petition_id: currentIds });
   };
 
   const handleSubmit = async () => {
-    console.log("inside submit");
     await dispatch(addreport(form, navigate));
   };
 
@@ -56,9 +37,60 @@ const Petition = () => {
     fetch();
   }, []);
 
+  const created = new Date(petition[0]?.time_stamp);
+  const depttime = new Date(petition[0]?.dept_time);
+  const subtime = new Date(petition[0]?.sub_time);
+  const circletime = new Date(petition[0]?.circle_time);
+  const shotime = new Date(petition[0]?.sho_time);
+
+  const times = [
+    {
+      date:
+        depttime.toLocaleDateString("en-US") === "1/1/1970"
+          ? null
+          : depttime.toLocaleDateString("en-US"),
+      action: "SSP",
+      data: petition[0]?.deptremarks,
+    },
+    {
+      date:
+        subtime.toLocaleDateString("en-US") === "1/1/1970"
+          ? null
+          : subtime.toLocaleDateString("en-US"),
+      action: "SP",
+      data: petition[0]?.subremarks,
+    },
+    {
+      date:
+        circletime.toLocaleDateString("en-US") === "1/1/1970"
+          ? null
+          : circletime.toLocaleDateString("en-US"),
+      action: "Circle Inspector",
+      data: petition[0]?.circleremarks,
+    },
+    {
+      date:
+        shotime.toLocaleDateString("en-US") === "1/1/1970"
+          ? null
+          : shotime.toLocaleDateString("en-US"),
+      action: "SHO",
+      data: petition[0]?.shoremarks,
+    },
+  ];
+
+  const filteredData = times.filter(
+    (item) => item.date !== null && item.data !== null
+  );
+  filteredData.sort((a, b) => a.date - b.date);
+  const [numPages, setNumPages] = useState();
+  const [pageNumber, setPageNumber] = useState(1);
+
+  function onDocumentLoadSuccess({ numPages }){
+    setNumPages(numPages);
+  }
   return (
-    <div className=" w-[100%] pt-16  flex flex-col min-h-[100vh] md:ml-[25%]  bg-[#b6a072] ">
-      {petition ? (
+    <div className=" w-[100%] pt-16  flex flex-col min-h-[100vh] md:ml-[20%]  bg-[#b4c9f0] ">
+      {petition[0] ? (
         <div className="py-[40px]">
           <div className="max-w-[80%] mx-auto bg-white rounded-lg">
             <p
@@ -82,7 +114,7 @@ const Petition = () => {
                   label="Title"
                   type="text"
                 >
-                  {petition.petition_id}
+                  {petition[0].petition_id}
                 </p>
 
                 <label
@@ -97,7 +129,7 @@ const Petition = () => {
                   label="Title"
                   type="text"
                 >
-                  {petition.p_name}
+                  {petition[0].p_name}
                 </p>
               </div>
               <div className="lg:flex lg:flex-row gap-4 ">
@@ -113,7 +145,7 @@ const Petition = () => {
                   label="Title"
                   type="text"
                 >
-                  {petition.mobile_num}
+                  {petition[0].mobile_num}
                 </p>
 
                 <label
@@ -128,14 +160,14 @@ const Petition = () => {
                   label="Title"
                   type="text"
                 >
-                  {petition.address}
+                  {petition[0].address}
                 </p>
               </div>
               <label
                 class="block text-black text-sm font-bold mb-2"
                 for="username"
               >
-                Title:
+                Type of Petition:
               </label>
               <p
                 className="shadow appearance-none border rounded min-w-[200px] py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
@@ -143,7 +175,21 @@ const Petition = () => {
                 label="Title"
                 type="text"
               >
-                {petition.title}
+                {petition[0].type}
+              </p>
+              <label
+                class="block text-black text-sm font-bold mb-2"
+                for="username"
+              >
+                nature of Petition:
+              </label>
+              <p
+                className="shadow appearance-none border rounded min-w-[200px] py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
+                name="title"
+                label="Title"
+                type="text"
+              >
+                {petition[0].category}
               </p>
               <label
                 class="block text-black text-sm font-bold mb-2 pt-4"
@@ -151,104 +197,68 @@ const Petition = () => {
               >
                 Description:
               </label>
-              <p
-                className="shadow h-[400px]  appearance-none border rounded min-w-[200px] py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
+              <div
+                className="shadow h-[400px]   border rounded min-w-[200px] py-2 px-3 text-black  "
                 name="description"
                 label="Description"
                 type="text"
-              >
-                {petition.description}
-              </p>
-              <div className="lg:flex lg:flex-row gap-4 py-4">
-                <label
-                  class="block text-black text-sm min-w-[100px] max-w-[100px] font-bold mb-2"
-                  for="username"
-                >
-                  Time Created:
-                </label>
-                <p
-                  className="shadow appearance-none border rounded min-w-[200px] py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
-                  name="title"
-                  label="Title"
-                  type="text"
-                >
-                  Date: {formatDate} - Time: {formatTime}
-                </p>
-                <label
-                  class="block text-black min-w-[100px] max-w-[100px] text-sm font-bold mb-2"
-                  for="username"
-                >
-                  Department Assigned:
-                </label>
-                <p
-                  className="shadow appearance-none border rounded min-w-[200px] py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
-                  name="title"
-                  label="Title"
-                  type="text"
-                >
-                  {petition.dept} - Assign On:{" "}
-                  {depttime.toLocaleDateString("en-US")}
-                </p>
+                dangerouslySetInnerHTML={{ __html: petition[0].description }}
+              />
+              <div class="py-4 ">
+                <table class="w-full overflow-scroll shadow rounded">
+                  <thead>
+                    <tr class="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b border-gray-600">
+                      <th class="px-4 py-3">Sl. No. </th>
+                      <th class="px-4 py-3">ACTIONS</th>
+                      <th class="px-4 py-3">Remarks</th>
+                      <th class="px-4 py-3 text-sm">Date (MM/DD/YYYY)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white">
+                    <tr class="text-gray-700 font-mono text-ms">
+                      <td class="px-4 py-3 border">
+                        <div class="flex items-center text-sm">
+                          <div>
+                            <p class=" text-black">1</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="px-4 py-3   border">
+                        CREATED BY {petition[0]?.submitted_by}
+                      </td>
+                      <td class="px-4 py-3 border">-</td>
+                      <td class="px-4 py-3  border">
+                        {created.toLocaleDateString("en-US")}
+                      </td>
+                    </tr>
+                    {filteredData.map((item, index) => (
+                      <tr key={index} class="text-gray-700 font-mono">
+                        <td class="px-4 py-3 border">
+                          <div class="flex items-center text-ms">
+                            <div>
+                              <p class=" text-black">{index + 2}</p>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="px-4 py-3  border">{item.action}</td>
+                        <td class="px-4 py-3  border">{item.data}</td>
+                        <td class="px-4 py-3 border">{item.date}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
-              <div className="lg:flex lg:flex-row gap-4 py-4">
-                <label
-                  class="block text-black min-w-[100px] max-w-[100px] text-sm font-bold mb-2"
-                  for="username"
-                >
-                  Sub Department:
-                </label>
-                <p
-                  className="shadow appearance-none border rounded min-w-[200px] py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
-                  name="title"
-                  label="Title"
-                  type="text"
-                >
-                  {petition.sub_dept === null
-                    ? "Not Assigned"
-                    : petition.sub_dept}{" "}
-                  Assign On:
-                  {subtime.toLocaleDateString("en-US")}
-                </p>
-                <label
-                  class="block text-black text-sm min-w-[100px] max-w-[100px] font-bold mb-2"
-                  for="username"
-                >
-                  Circle Department:
-                </label>
-                <p
-                  className="shadow appearance-none border rounded min-w-[200px] py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
-                  name="title"
-                  label="Title"
-                  type="text"
-                >
-                  {petition.circle_insp === null
-                    ? "Not Assigned"
-                    : petition.circle_insp}
-                  Assign On:
-                  {shotime.toLocaleDateString("en-US")}
-                </p>
-              </div>
-              <label
-                class="block text-black text-sm font-bold mb-2"
-                for="username"
-              >
-                SHO:
-              </label>
-              <p
-                className="shadow appearance-none border rounded min-w-[200px] py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
-                name="title"
-                label="Title"
-                type="text"
-              >
-                {petition.user_name === null
-                  ? "Not Assigned"
-                  : petition.user_name}
-                Assign On:
-                {shotime.toLocaleDateString("en-US")}
-              </p>
+
               <div>
                 <p className="py-10px">Document:</p>
-                <img src={petition.image} />
+                <div>
+                <Document file={petition[0]?.image} onLoadSuccess={onDocumentLoadSuccess}>
+                <Page pageNumber={pageNumber} />
+      </Document>
+      <p className="mx-auto">
+        Page {pageNumber} of {numPages}
+      </p>
+    </div>
               </div>
 
               <br />
@@ -300,63 +310,6 @@ const Petition = () => {
                 </div>
               </div>
             )}
-
-            {/* <Timeline>
-              <TimelineItem>
-                <TimelineOppositeContent color="text.secondary">
-                  {petition.time_stamp}
-                </TimelineOppositeContent>
-                <TimelineSeparator>
-                  <TimelineDot />
-                  <TimelineConnector />
-                </TimelineSeparator>
-                <TimelineContent>Time Created</TimelineContent>
-              </TimelineItem>
-
-              {petition.dept_time != null ? (
-                <TimelineItem>
-                  <TimelineOppositeContent color="text.secondary">
-                    {petition.dept_time}
-                  </TimelineOppositeContent>
-                  <TimelineSeparator>
-                    <TimelineDot />
-                    <TimelineConnector />
-                  </TimelineSeparator>
-                  <TimelineContent>Department Assigned</TimelineContent>
-                </TimelineItem>
-              ) : (
-                <></>
-              )}
-
-              {petition.sub_time != null ? (
-                <TimelineItem>
-                  <TimelineOppositeContent color="text.secondary">
-                    {petition.sub_time}
-                  </TimelineOppositeContent>
-                  <TimelineSeparator>
-                    <TimelineDot />
-                    <TimelineConnector />
-                  </TimelineSeparator>
-                  <TimelineContent>Department Assigned</TimelineContent>
-                </TimelineItem>
-              ) : (
-                <></>
-              )}
-              {petition.sho_time != null ? (
-                <TimelineItem>
-                  <TimelineOppositeContent color="text.secondary">
-                    {petition.sho_time}
-                  </TimelineOppositeContent>
-                  <TimelineSeparator>
-                    <TimelineDot />
-                    <TimelineConnector />
-                  </TimelineSeparator>
-                  <TimelineContent>Department Assigned</TimelineContent>
-                </TimelineItem>
-              ) : (
-                <></>
-              )}
-            </Timeline> */}
           </div>
         </div>
       ) : (

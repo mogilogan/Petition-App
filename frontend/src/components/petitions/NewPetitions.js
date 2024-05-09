@@ -14,9 +14,10 @@ import { sspData } from "../../assests/ssp";
 import { circle } from "../../assests/circle";
 import { useNavigate } from "react-router-dom";
 
-const Petitions = () => {
+const NewPetitions = () => {
   //fetched user
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+  const [data, setData] = useState(user?.userData);
 
   // fetch petitons from redux state
   const { petitions, isLoading } = useSelector((state) => state.petition);
@@ -44,7 +45,10 @@ const Petitions = () => {
 
   //usereffect to make default select values
   useEffect(() => {
-    setSelectedValue("select");
+    setSelectedValue("new");
+    data.whatnew = "newlyassigned";
+    console.log(data);
+    dispatch(fetchall(user.userData, "new", setError));
   }, []);
 
   // plugins declarations
@@ -53,25 +57,20 @@ const Petitions = () => {
 
   // handle Filter change
   const handleChange = async (e) => {
-    if (e.target.value === "select") {
-      setSelectedValue(e.target.value);
-    } else {
-      setSelectedValue(e.target.value);
-      setError("");
-      const ok = await dispatch(fetchall(user.userData, e.target.value));
-      console.log(ok);
-      setError(ok);
-    }
+    data.whatnew = e.target.value;
+    setError("");
+    console.log(data);
+    dispatch(fetchall(data, "new", setError));
   };
 
   // handle ssp select
   const handlessp = (petition_id) => {
-    console.log(petition_id);
     dispatch(
       assignssp({
         petition_id: petition_id,
         dept_name: selectedssp[petition_id],
         remarks: sspremarks,
+        assigned_by: user?.userData.user_name,
       })
     );
   };
@@ -87,12 +86,12 @@ const Petitions = () => {
 
   //handle sp select
   const handlesp = (petition_id) => {
-    console.log(petition_id);
     dispatch(
       assignsp({
         petition_id: petition_id,
         sub_dept: selectedsp[petition_id],
         remarks: spremarks,
+        assigned_by: user?.userData.user_name,
       })
     );
   };
@@ -108,14 +107,25 @@ const Petitions = () => {
 
   //handle inspector selct
   const handleins = (petition_id) => {
-    console.log(petition_id);
-    dispatch(
-      assignins({
-        petition_id: petition_id,
-        circle_insp: selectedins[petition_id],
-        remarks: insremarks,
-      })
-    );
+    if (selectedins[petition_id].slice(0, 3) === "SHO") {
+      dispatch(
+        assignsho({
+          petition_id: petition_id,
+          user_name: selectedins[petition_id],
+          remarks: insremarks,
+          assigned_by: user?.userData.user_name,
+        })
+      );
+    } else {
+      dispatch(
+        assignins({
+          petition_id: petition_id,
+          circle_insp: selectedins[petition_id],
+          remarks: insremarks,
+          assigned_by: user?.userData.user_name,
+        })
+      );
+    }
   };
   // handle ins change
   const handleinschange = (e, petition_id) => {
@@ -128,18 +138,17 @@ const Petitions = () => {
 
   //handle sho selct
   const handlesho = (petition_id) => {
-    console.log(petition_id);
     dispatch(
       assignsho({
         petition_id: petition_id,
         user_name: selectedsho[petition_id],
         remarks: shoremarks,
+        assigned_by: user?.userData.user_name,
       })
     );
   };
   // handle sho change
   const handleshochange = (e, petition_id) => {
-    console.log(selectedsho);
     setSelectedpetition(petition_id);
     setSelectedsho((prevSelectedsp) => ({
       ...prevSelectedsp,
@@ -173,21 +182,24 @@ const Petitions = () => {
   };
 
   return (
-    <div className=" w-[100%] pt-16 flex flex-col min-h-[100vh]  md:ml-[25%]   bg-[#b6a072] ">
+    <div className=" w-[100%] pt-16 flex flex-col min-h-[100vh]  md:ml-[20%]   bg-[#b4c9f0]">
       <div className="flex flex-row justify-center">
-        <div class=" px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
-          <p className="flex-none text-lg">Filter By:</p>
-          <select
-            value={selectedValue}
-            onChange={(e) => handleChange(e)}
-            class=" focus:text-indigo-600 focus:outline-none bg-transparent ml-1"
-          >
-            <option value="select">Select</option>
-            <option value="new">New</option>
-            <option value="ongoing">Ongoing</option>
-            <option value="closed">Closed</option>
-          </select>
-        </div>
+        {(user?.userData?.rank === "2" ||
+          user?.userData?.rank === "3" ||
+          user?.userData?.rank === "4" ||
+          user?.userData?.rank === "5") && (
+          <div class=" px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
+            <p className="flex-none text-lg">Filter By:</p>
+
+            <select
+              onChange={(e) => handleChange(e)}
+              class=" focus:text-indigo-600 focus:outline-none bg-transparent ml-1"
+            >
+              <option value="newlyassigned">Newly Assigned</option>
+              <option value="forwarded">Forwarded</option>
+            </select>
+          </div>
+        )}
       </div>
 
       {selectedValue !== "select" ? (
@@ -198,7 +210,7 @@ const Petitions = () => {
                 <thead>
                   <tr class="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b border-gray-600">
                     <th class="px-4 py-3">Petition Id</th>
-                    <th class="px-4 py-3">Title</th>
+                    <th class="px-4 py-3">type</th>
                     <th class="px-4 py-3">Date of Petition</th>
 
                     {selectedValue === "new" && (
@@ -276,10 +288,10 @@ const Petitions = () => {
                         {petition.petition_id}
                       </td>
                       <td class="px-4 py-3 border" align="right">
-                        {petition.title}
+                        {petition.type}
                       </td>
                       <td class="px-4 py-3 border" align="right">
-                        {petition.time_stamp.slice(0, 10)}
+                        {petition?.time_stamp?.slice(0, 10)}
                       </td>
 
                       {selectedValue === "new" && (
@@ -297,6 +309,7 @@ const Petitions = () => {
                                         handlesspchange(e, petition.petition_id)
                                       }
                                     >
+                                      <option value="select">Select</option>
                                       {Object.keys(sspData).map((ssp) => (
                                         <option value={ssp}>{ssp}</option>
                                       ))}
@@ -318,6 +331,7 @@ const Petitions = () => {
                                       {sspData[user.userData.dept_name] !==
                                       (null || undefined) ? (
                                         <>
+                                          <option value="select">Select</option>
                                           {Object.keys(
                                             sspData[user.userData.dept_name]
                                           ).map((sp, index) => (
@@ -350,6 +364,7 @@ const Petitions = () => {
                                         <>bad req</>
                                       ) : (
                                         <>
+                                          <option value="select">Select</option>
                                           {Object.values(
                                             sspData?.[
                                               user.userData.dept_name
@@ -381,6 +396,7 @@ const Petitions = () => {
                                         <>bad req</>
                                       ) : (
                                         <>
+                                          <option value="select">Select</option>
                                           {Object.values(
                                             circle?.[user.userData.user_name]
                                           ).map((sho, index) => (
@@ -534,4 +550,4 @@ const Petitions = () => {
   );
 };
 
-export default Petitions;
+export default NewPetitions;

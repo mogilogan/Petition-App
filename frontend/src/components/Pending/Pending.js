@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { circle } from "../../assests/circle";
 import { useNavigate } from "react-router-dom";
 import { fetchreport } from "../../actions/report";
+import { CLEAR } from "../../constants/actionTypes";
 
 const Pending = () => {
   // plugins declarations
@@ -24,6 +25,7 @@ const Pending = () => {
       user_name: user.userData.user_name,
       rank: user.userData.rank,
     };
+    dispatch({ type: CLEAR });
     const message = await dispatch(fetchreport(form));
     window.alert(message);
   };
@@ -43,7 +45,7 @@ const Pending = () => {
   };
 
   return (
-    <div className=" w-[100%] pt-16 flex flex-col min-h-[100vh]  md:ml-[25%]   bg-[#b6a072] ">
+    <div className=" w-[100%] pt-16 flex flex-col min-h-[100vh]  md:ml-[20%]   bg-[#b4c9f0] ">
       <section class="container mx-auto p-6 font-mono">
         <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
           <div class="w-full overflow-x-auto">
@@ -70,7 +72,7 @@ const Pending = () => {
                       {petition.title}
                     </td>
                     <td class="px-4 py-3 border" align="right">
-                      {petition.time_stamp.slice(0, 10)}
+                      {petition?.time_stamp?.slice(0, 10)}
                     </td>
                     <td align="right" class="px-4 py-3 border">
                       <button

@@ -14,7 +14,7 @@ import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 
 // initial state for petition id
-const initialState = { petition_id: null };
+const initialState = { search_by: "id", search_item: "" };
 
 const Getcomplain = () => {
   useEffect(() => {
@@ -31,13 +31,19 @@ const Getcomplain = () => {
   const { petition } = useSelector((state) => state.status);
 
   // local state
-  const [id, setId] = useState(initialState);
+  const [data, setData] = useState(initialState);
+
+  // handble select
+  const handleChange = async (e) => {
+    setData({ ...data, search_item: "" });
+    setData({ ...data, search_by: e.target.value });
+  };
 
   // fetch petition by id
   const fetchPetition = async () => {
     setErrmsg("");
-    const errmsgs = await dispatch(statuscheck(id));
-    console.log(errmsgs);
+    const errmsgs = await dispatch(statuscheck(data));
+
     setErrmsg(errmsgs);
   };
 
@@ -46,16 +52,32 @@ const Getcomplain = () => {
       <h1 className="text-3xl text-[#0d193a] py-2 text-center font-libre">
         Check Complain Details and Status
       </h1>
+
+      <div class=" px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-100 hover:bg-gray-300 cursor-pointer rounded">
+        <p className="flex-none text-lg">Search By:</p>
+        <select
+          onChange={(e) => handleChange(e)}
+          class=" focus:text-indigo-600 focus:outline-none bg-transparent ml-1"
+        >
+          <option value="id">Petition_id</option>
+          <option value="mail">Mail ID</option>
+          <option value="mobile">Mobile Number</option>
+          <option value="date">Date</option>
+        </select>
+      </div>
+
       <Box className="text-center py-2">
         <input
           className="formtext"
-          placeholder="Petition id"
+          placeholder={`${data.search_by}`}
           type="text"
-          name="petition_id"
+          name="search_item"
           id="outlined-basic"
           label="Enter Complain Id"
           variant="outlined"
-          onChange={(e) => setId({ ...id, [e.target.name]: e.target.value })}
+          onChange={(e) =>
+            setData({ ...data, [e.target.name]: e.target.value })
+          }
         />
         <br />
         <div className="py-4">
@@ -108,7 +130,7 @@ const Getcomplain = () => {
                 )}
 
                 {/* Condition for Ongoing */}
-                {petition.user_name != null && petition.closed === 0 && (
+                {petition?.user_name != null && petition.closed === 0 && (
                   <div>
                     <Table
                       petition_id={petition.petition_id}
@@ -119,7 +141,7 @@ const Getcomplain = () => {
                 )}
 
                 {/* Condition for Closed */}
-                {petition.sub_dept != null && petition.closed === 1 && (
+                {petition?.sub_dept != null && petition.closed === 1 && (
                   <div>
                     <Table
                       petition_id={petition.petition_id}
@@ -141,7 +163,7 @@ const Getcomplain = () => {
                   <TimelineContent>Time Created</TimelineContent>
                 </TimelineItem>
 
-                {petition.dept_time != null ? (
+                {petition?.dept_time != null ? (
                   <TimelineItem>
                     <TimelineOppositeContent color="text.secondary">
                       {petition.dept_time}
@@ -156,7 +178,7 @@ const Getcomplain = () => {
                   <></>
                 )}
 
-                {petition.sub_time != null ? (
+                {petition?.sub_time != null ? (
                   <TimelineItem>
                     <TimelineOppositeContent color="text.secondary">
                       {petition.sub_time}
@@ -165,12 +187,12 @@ const Getcomplain = () => {
                       <TimelineDot />
                       <TimelineConnector />
                     </TimelineSeparator>
-                    <TimelineContent>Department Assigned</TimelineContent>
+                    <TimelineContent>Sub Department Assigned</TimelineContent>
                   </TimelineItem>
                 ) : (
                   <></>
                 )}
-                {petition.sho_time != null ? (
+                {petition?.sho_time != null ? (
                   <TimelineItem>
                     <TimelineOppositeContent color="text.secondary">
                       {petition.sho_time}
@@ -179,7 +201,7 @@ const Getcomplain = () => {
                       <TimelineDot />
                       <TimelineConnector />
                     </TimelineSeparator>
-                    <TimelineContent>Department Assigned</TimelineContent>
+                    <TimelineContent>SHO Assigned</TimelineContent>
                   </TimelineItem>
                 ) : (
                   <></>
