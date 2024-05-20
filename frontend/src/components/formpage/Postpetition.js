@@ -167,6 +167,7 @@ const Postpetition = () => {
       type: form?.type,
       category: form?.category,
     };
+
     dispatch(duplicatecheck(dupdata));
   };
   //forwared
@@ -314,7 +315,7 @@ const Postpetition = () => {
             <ReactQuill
               theme="snow"
               value={form.description}
-              onChange={(value) => setForm({ ...form, description: value })}
+              onChange={(value) => setForm({ ...form, description: value.replace(/'/g, "''") })}
               className="editor-input"
               modules={modules}
             />
