@@ -267,7 +267,7 @@ const Postpetition = () => {
               type="text"
               required={true}
               value={form.address}
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => setForm({ ...form, address: e.target.value.replace(/'/g, "''") })}
             />
           </div>
 
