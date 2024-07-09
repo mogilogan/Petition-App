@@ -16,6 +16,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 
 const Report = () => {
+  const { petition } = useSelector((state) => state.status);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // get user
@@ -33,7 +34,7 @@ const Report = () => {
   const [form, setForm] = useState(initialState);
   const { currentId } = useParams();
 
-  const { petition } = useSelector((state) => state.status);
+
 
 
 
