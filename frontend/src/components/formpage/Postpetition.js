@@ -74,10 +74,13 @@ const Postpetition = () => {
     console.log(user);
     setForm({
       ...form,
+      
       submitted_by: user?.userData?.user_name,
       code: user?.userData?.code,
     });
     const message = await dispatch(addpetition(form));
+
+    console.log(message?.complain_details)
 
     var printWindow = window.open("", "Print Window", "height=800,width=800");
     printWindow.document.write(
@@ -162,11 +165,18 @@ const Postpetition = () => {
 
   const handleduplicate = () => {
     setShowModal(true);
+    setForm({
+      ...form,
+      address:form.address.replace(/'/g, "''"),
+      description:form.description.replace(/'/g, "''"),
+   
+    });
     const dupdata = {
       mobile_num: form?.mobile_num,
       type: form?.type,
       category: form?.category,
     };
+
     dispatch(duplicatecheck(dupdata));
   };
   //forwared

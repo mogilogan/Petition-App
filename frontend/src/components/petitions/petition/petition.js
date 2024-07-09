@@ -5,6 +5,12 @@ import { statuscheck } from "../../../actions/status";
 import { addreport } from "../../../actions/report";
 import { Button } from "@mui/material";
 import { Document, Page } from 'react-pdf';
+import { pdfjs } from 'react-pdf';
+
+import 'react-pdf/dist/Page/AnnotationLayer.css';
+import 'react-pdf/dist/Page/TextLayer.css';
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const initialState = {
   petition_id: "",
@@ -82,6 +88,7 @@ const Petition = () => {
     (item) => item.date !== null && item.data !== null
   );
   filteredData.sort((a, b) => a.date - b.date);
+
   const [numPages, setNumPages] = useState();
   const [pageNumber, setPageNumber] = useState(1);
 
@@ -252,8 +259,18 @@ const Petition = () => {
               <div>
                 <p className="py-10px">Document:</p>
                 <div>
-                <Document file={petition[0]?.image} onLoadSuccess={onDocumentLoadSuccess}>
-                <Page pageNumber={pageNumber} />
+                <Document file={petition[0]?.image} onLoadSuccess={onDocumentLoadSuccess} onLoadError={console.error}> 
+                {Array.apply(null, Array(numPages))
+          .map((x, i) => i + 1)
+          .map((page) => {
+            return (
+              <Page
+                pageNumber={page}
+                renderTextLayer={false}
+                renderAnnotationLayer={false}
+              />
+            );
+          })}
       </Document>
       <p className="mx-auto">
         Page {pageNumber} of {numPages}

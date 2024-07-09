@@ -10,8 +10,13 @@ import {
   returnreport,
 } from "../../actions/report";
 import { Document, Page } from 'react-pdf';
+import { pdfjs } from 'react-pdf';
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+
 
 const Report = () => {
+  const { petition } = useSelector((state) => state.status);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // get user
@@ -29,7 +34,7 @@ const Report = () => {
   const [form, setForm] = useState(initialState);
   const { currentId } = useParams();
 
-  const { petition } = useSelector((state) => state.status);
+
 
 
 
@@ -295,8 +300,18 @@ const Report = () => {
               <br />
             </div>
             <div className="py-4">
-            <Document file={petition?.evidence} onLoadSuccess={onDocumentLoadSuccess}>
-        <Page pageNumber={pageNumber} />
+            <Document file={petition?.evidence} onLoadSuccess={onDocumentLoadSuccess} onLoadError={console.error}>
+            {Array.apply(null, Array(numPages))
+          .map((x, i) => i + 1)
+          .map((page) => {
+            return (
+              <Page
+                pageNumber={page}
+                renderTextLayer={false}
+                renderAnnotationLayer={false}
+              />
+            );
+          })}
       </Document>
       <p>
         Page {pageNumber} of {numPages}
