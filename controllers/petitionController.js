@@ -354,7 +354,7 @@ const fetchallongoing = (req, res) => {
       switch (whatsongoing) {
         case "active":
           pool.query(
-            "SELECT * FROM petition_info WHERE petition_id IN (SELECT petition_id FROM petition_circle) AND petition_info.petition_id IN (\
+            "SELECT * FROM petition_info WHERE petition_id IN (SELECT petition_id FROM petition_circle) OR petition_info.petition_id IN (\
             SELECT f.petition_id FROM forwarded_table f WHERE JSON_SEARCH(f.forwards, 'one', '" +
               user_name +
               "') IS NOT NULL\
@@ -375,7 +375,7 @@ const fetchallongoing = (req, res) => {
         case "newremarks":
           pool.query(
             "SELECT * FROM petition_info WHERE petition_id IN (SELECT petition_id FROM petition_circle) \
-          AND  petition_id IN (SELECT petition_id FROM petition_subdept WHERE petition_subdept.sub_dept = '" +
+          OR  petition_id IN (SELECT petition_id FROM petition_subdept WHERE petition_subdept.sub_dept = '" +
               sub_dept +
               "') AND petition_info.closed = '0' ORDER BY time_stamp DESC",
 

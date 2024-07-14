@@ -16,7 +16,7 @@ const Login = () => {
     e.preventDefault();
     const mess = await dispatch(signin(form, navigate));
 
-    window.alert(mess);
+    
   };
 
   //handle change actions:
@@ -27,7 +27,7 @@ const Login = () => {
     <div className=" w-[100%]  flex flex-col min-h-[100vh] items-center  justify-center md:ml-[20%]    bg-[#b4c9f0]">
       <div class="sm:w-[50%] rounded-md bg-[#b4c9f0] shadow-inner-blue-neumorphism-xl p-4 pt-0 ">
         <header class="flex h-24 items-center justify-between font-bold  text-black">
-          <span className="text-xl md:text-3xl">Officier Login</span>
+          <span className="text-xl md:text-3xl">Officer Login</span>
         </header>
         <form class="grid gap-3" onSubmit={handlelogin}>
           <input

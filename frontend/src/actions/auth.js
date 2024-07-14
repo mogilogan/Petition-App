@@ -8,6 +8,9 @@ export const signin = (formData, router) => async (dispatch) => {
     const { data } = await api.signIn(formData);
     dispatch({ type: AUTH, data });
     router("/add");
+    setTimeout(() => {
+      window.alert("Logged in successfully");
+    }, 0);
     return "logged in successfully";
   } catch (error) {
     // returns error based on username and password check

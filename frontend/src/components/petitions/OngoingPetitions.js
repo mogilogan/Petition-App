@@ -47,9 +47,9 @@ const OngoingPetitions = () => {
       <div className="flex flex-row justify-center">
         {(user?.userData?.rank === "2" ||
           user?.userData?.rank === "3" ||
-          user?.userData?.rank === "4" ||
-          user?.userData?.rank === "5") && (
+          user?.userData?.rank === "4" ) && (
           <div class=" px-4 flex items-center text-sm font-medium leading-none text-gray-600 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded">
+            
             <p className="flex-none text-lg">Filter By:</p>
             <select
               onChange={(e) => handleChange(e)}
@@ -64,11 +64,14 @@ const OngoingPetitions = () => {
       <section class="container mx-auto p-6 font-mono">
         <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
           <div class="w-full overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full text-[10px]">
               <thead>
-                <tr class="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b border-gray-600">
+                <tr class=" font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b border-gray-600">
                   <th class="px-4 py-3">Petition Id</th>
                   <th class="px-4 py-3">Title</th>
+                  <th class="px-4 py-3">Category</th>
+                  <th class="px-4 py-3">Submitted_by</th>
+                  <th class="px-4 py-3">Active Place</th>
                   <th class="px-4 py-3">Date of Petition</th>
 
                   <th class="px-4 py-3" align="right">
@@ -78,13 +81,22 @@ const OngoingPetitions = () => {
               </thead>
 
               <tbody class="bg-white">
-                {petitions.map((petition) => (
+                {petitions?.map((petition) => (
                   <tr class="text-gray-700" key={petition.petition_id}>
                     <td class="px-4 py-3 border" align="center">
-                      {petition.petition_id}
+                      {petition.akn_num}
                     </td>
                     <td class="px-4 py-3 border" align="right">
                       {petition.type}
+                    </td>
+                    <td class="px-4 py-3 border" align="right">
+                      {petition.category}
+                    </td>
+                    <td class="px-4 py-3 border" align="right">
+                      {petition.submitted_by}
+                    </td>
+                    <td class="px-4 py-3 border" align="right">
+                      {petition.active_place}
                     </td>
                     <td class="px-4 py-3 border" align="right">
                       {petition.time_stamp.slice(0, 10)}

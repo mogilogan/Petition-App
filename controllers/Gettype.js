@@ -15,6 +15,8 @@ const getMonthLabel = (month) => {
   ];
   return months[month - 1];
 };
+
+
 const getype = (req) => {
   const months = [
     "jan",
@@ -37,6 +39,8 @@ const getype = (req) => {
   // Process the data
   const result = [];
 
+
+
   results.forEach((dataArray) => {
     if (dataArray && Array.isArray(dataArray)) {
       dataArray.forEach((row) => {
@@ -56,9 +60,10 @@ const getype = (req) => {
           result.push(entry);
         }
 
+   
         // Find or create the entry for the year
         let yearEntry = entry.data.find((item) => item.year === year);
-
+        
         if (!yearEntry) {
           yearEntry = {
             year: year,
@@ -69,11 +74,15 @@ const getype = (req) => {
           };
           entry.data.push(yearEntry);
         }
-
+        
         // Increment the count for the specific month
-        const monthIndex = months.indexOf(month);
+        const monthIndex = months.indexOf(month) +1;
+
+       
+
+     
         yearEntry.data[monthIndex].y = (
-          parseInt(yearEntry.data[monthIndex].y) + 1
+          parseInt(yearEntry?.data[monthIndex]?.y) + 1
         ).toString();
       });
     }
