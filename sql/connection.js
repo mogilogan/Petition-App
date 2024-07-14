@@ -9,7 +9,7 @@ class Connection {
         connectionLimit: 100,
         host: "localhost",
         user: "username",
-        password: "chicken$4",
+        password: "Chicken$4",
         database: "pms_123",
         port: 3306,
         multipleStatements: true,

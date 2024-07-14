@@ -91,7 +91,7 @@ const countongoing = (req, res) => {
     WHERE u.petition_id IS NULL AND ins.petition_id IS NULL;";
 
       onquery =
-        "SELECT petition_id,type,time_stamp FROM petition_info WHERE petition_id IN (SELECT petition_id FROM petition_circle) AND petition_info.petition_id IN (\
+        "SELECT petition_id,type,time_stamp FROM petition_info WHERE petition_id IN (SELECT petition_id FROM petition_circle) OR petition_info.petition_id IN (\
       SELECT f.petition_id FROM forwarded_table f WHERE JSON_SEARCH(f.forwards, 'one', '" +
         user_name +
         "') IS NOT NULL\

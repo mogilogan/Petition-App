@@ -18,6 +18,8 @@ const initialState = {
 };
 
 const Petition = () => {
+
+  const paths = window.location.pathname;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // get user
@@ -281,7 +283,7 @@ const Petition = () => {
               <br />
             </div>
 
-            {user?.userData?.rank === "5" && (
+            {user?.userData?.rank === "5"  && petition[0]?.active_place !== "CLOSED" &&  (
               <div>
                 <label
                   class="block text-gray-700 text-sm font-bold mb-2"
